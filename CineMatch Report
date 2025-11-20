@@ -2,13 +2,11 @@
         Weekly Documentation 13/11 έως 20/11
 
 
-
-##Εξοικείωση όλων των μελών της ομάδας με τις λειτουργίες του GitHub: (issues, pull requests, commits, contribution insight) 
-
-
 ----PROJECT CineMatch----
 
-##Έρευνα βασικών εργαλείων που θα χρειαστούμε:
+##Εξοικείωση όλων των μελών της ομάδας με τις λειτουργίες του GitHub: (issues, pull requests, commits, contribution insight)##
+
+#Έρευνα βασικών εργαλείων που θα χρειαστούμε:
 
 *Luxand API
 
@@ -20,12 +18,11 @@
 
 
 
-##Προεργασία για το Project (Πρώτο Sprint)
+----Προεργασία (Πρώτο Sprint)----
 
 #Aρχικός σχεδιασμός βασικού UI 
 
 #Oρισμός κλάσεων με βάση τις λειτουργίες της εφαρμογής:
-
 *Database
 *Movie
 *CineMatchApp
@@ -47,4 +44,3 @@
 *Build System: Maven  
 *Oracle JDK: 23  
 *Δημιουργία Application Run Configuration
-
