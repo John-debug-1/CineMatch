@@ -1,0 +1,10 @@
+public class Config {
+
+    public static String getTmdbApiKey() {
+        String key = System.getenv("TMDB_API_KEY");
+        if (key == null || key.isBlank()) {
+            throw new IllegalStateException("TMDB_API_KEY environment variable is not set");
+        }
+        return key;
+    }
+}
