@@ -1,0 +1,50 @@
+
+        Weekly Documentation 13/11 έως 20/11
+
+
+
+##Εξοικείωση όλων των μελών της ομάδας με τις λειτουργίες του GitHub: (issues, pull requests, commits, contribution insight) 
+
+
+----PROJECT CineMatch----
+
+##Έρευνα βασικών εργαλείων που θα χρειαστούμε:
+
+*Luxand API
+
+*HuggingFace AI
+
+*TMDb API
+
+*API keys
+
+
+
+##Προεργασία για το Project (Πρώτο Sprint)
+
+#Aρχικός σχεδιασμός βασικού UI 
+
+#Oρισμός κλάσεων με βάση τις λειτουργίες της εφαρμογής:
+
+*Database
+*Movie
+*CineMatchApp
+*Config
+*MovieService
+*TMDdatabase_Client
+*FXML File για το Scene Builder
+
+
+#Coding (partially completed): 
+*Main class
+*Database 
+*Config (Key reader) 
+
+
+---Προδιαγραφές εφαρμογής---
+ 
+*IntelliJ Community Edition  
+*Build System: Maven  
+*Oracle JDK: 23  
+*Δημιουργία Application Run Configuration
+
