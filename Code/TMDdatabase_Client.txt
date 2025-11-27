@@ -72,7 +72,7 @@ public class TMDdatabase_Client {
 
     }
 
-    // ================== Αναζήτηση Ηθοποιού =====================
+    // ================== Αναζήτηση Ηθοποιού ==================
 
     public List<Actor> searchActors(String query) {
         try {
