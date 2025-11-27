@@ -22,7 +22,7 @@ import java.util.Locale;
 
 public class CineMatchController {
 
-    // -------- FXML references --------
+    // --------FXML references--------
     @FXML
     private TextField searchField;
 
@@ -76,15 +76,18 @@ public class CineMatchController {
     @FXML
     private void onTrendingClicked() {
 
+
     }
 
     @FXML
     private void onQuizClicked() {
 
+
     }
 
     @FXML
     private void onUploadContentClicked() {
+
 
     }
 
@@ -96,10 +99,12 @@ public class CineMatchController {
     @FXML
     private void onSentimentClicked() {
 
+
     }
 
     @FXML
     private void onKpisClicked() {
+
 
     }
 
