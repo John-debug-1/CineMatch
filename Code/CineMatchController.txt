@@ -47,6 +47,7 @@ public class CineMatchController {
     // -------- Service injected from CineMatchApp --------
     private MovieService movieService;
 
+
     /**
      Setter που δέχεται το MovieService από το κυρίως App.
      Χρειάζεται για να μπορεί ο controller να κάνει αναζητήσεις ταινιών.
