@@ -29,7 +29,6 @@ public class CineMatchController {
     @FXML
     private Label titleLabel;
 
-
     @FXML
     private Label yearLabel;
 
