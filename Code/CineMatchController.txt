@@ -22,7 +22,7 @@ import java.util.Locale;
 
 public class CineMatchController {
 
-    // --------FXML references--------
+    //--------FXML references--------
     @FXML
     private TextField searchField;
 
@@ -56,13 +56,13 @@ public class CineMatchController {
     }
 
 
-    // ----------------
+    //----------------
     @FXML
     public void initialize() {
 
     }
 
-    // -------- Search Movies --------
+    //-------- Search Movies --------
     @FXML
     private void onSearch() {
         String query = searchField.getText().trim();
