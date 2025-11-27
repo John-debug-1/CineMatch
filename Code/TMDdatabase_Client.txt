@@ -72,30 +72,23 @@ public class TMDdatabase_Client {
 
     }
 
-    // ===================== ACTOR SEARCH =====================
+    // ===================== Αναζήτηση Ηθοποιού =====================
 
     public List<Actor> searchActors(String query) {
         try {
             String encoded = URLEncoder.encode(query, StandardCharsets.UTF_8);
-            String url = BASE_URL + "/search/person?api_key=" + apiKey +
-                    "&language=en-US&query=" + encoded +
-                    "&page=1&include_adult=false";
+            String url = BASE_URL + "/search/person?api_key=" + apiKey + "&language=en-US&query=" + encoded + "&page=1&include_adult=false";
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .GET()
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
 
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
                 System.err.println("TMDb actor search failed with status " + response.statusCode());
                 return List.of();
             }
 
-            TmdbPersonSearchResponse searchResponse =
-                    objectMapper.readValue(response.body(), TmdbPersonSearchResponse.class);
+            TmdbPersonSearchResponse searchResponse = objectMapper.readValue(response.body(), TmdbPersonSearchResponse.class);
 
             List<Actor> actors = new ArrayList<>();
             if (searchResponse.results != null) {
@@ -111,30 +104,23 @@ public class TMDdatabase_Client {
         }
     }
 
-    // ===================== DIRECTOR SEARCH =====================
+    // ===================== Αναζήτηση Σκηνοθέτη =====================
 
     public List<Director> searchDirectors(String query) {
         try {
             String encoded = URLEncoder.encode(query, StandardCharsets.UTF_8);
-            String url = BASE_URL + "/search/person?api_key=" + apiKey +
-                    "&language=en-US&query=" + encoded +
-                    "&page=1&include_adult=false";
+            String url = BASE_URL + "/search/person?api_key=" + apiKey + "&language=en-US&query=" + encoded + "&page=1&include_adult=false";
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .GET()
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
 
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
                 System.err.println("TMDb director search failed with status " + response.statusCode());
                 return List.of();
             }
 
-            TmdbPersonSearchResponse searchResponse =
-                    objectMapper.readValue(response.body(), TmdbPersonSearchResponse.class);
+            TmdbPersonSearchResponse searchResponse = objectMapper.readValue(response.body(), TmdbPersonSearchResponse.class);
 
             List<Director> directors = new ArrayList<>();
             if (searchResponse.results != null) {
@@ -170,8 +156,7 @@ public class TMDdatabase_Client {
                 return Optional.empty();
             }
 
-            TmdbMovieDTO dto =
-                    objectMapper.readValue(response.body(), TmdbMovieDTO.class);
+            TmdbMovieDTO dto = objectMapper.readValue(response.body(), TmdbMovieDTO.class);
 
             return Optional.of(convert(dto));
 
