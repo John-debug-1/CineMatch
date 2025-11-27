@@ -1,10 +1,27 @@
-public class Config {
+public class Config {  
+    // Θα τη χρησιμοποιούμε ως βοηθητική κλάση ρυθμίσεων (configuration).
 
-    public static String getTmdbApiKey() {
-        String key = System.getenv("TMDB_API_KEY");
-        if (key == null || key.isBlank()) {
-            throw new IllegalStateException("TMDB_API_KEY environment variable is not set");
+    public static String getTmdbApiKey() {  
+        // static → την καλούμε χωρίς να φτιάξουμε αντικείμενο: Config.getTmdbApiKey().
+        // Σκοπός: να διαβάσει με ασφαλή τρόπο το TMDb API key από τα environment variables.
+
+        String key = System.getenv("TMDB_API_KEY");  
+        // Καλεί τη System.getenv(...) για να πάρει την τιμή της μεταβλητής περιβάλλοντος
+        // Αν η μεταβλητή έχει οριστεί στο σύστημα/IntelliJ, η τιμή της μπαίνει στη μεταβλητή key. Αν δεν έχει οριστεί, τότε το key θα είναι null.
+
+        if (key == null || key.isBlank()) {  
+            // Έλεγχος αν το key είναι άκυρο.
+            // key == null       → δεν βρέθηκε καθόλου η μεταβλητή περιβάλλοντος.
+            // key.isBlank()     → υπάρχει αλλά είναι κενό string.
+            // Αν ισχύει ένα από τα δύο, θεωρούμε ότι ΔΕΝ έχουμε έγκυρο API key.
+
+            throw new IllegalStateException("TMDB_API_KEY environment variable is not set");  
+            // Αν δεν υπάρχει valid API key, πετάμε IllegalStateException.
+            // Αυτό σταματά την εκτέλεση της εφαρμογής.
         }
-        return key;
-    }
+
+        return key;  
+        // Αν περάσει τον έλεγχο (δηλαδή key != null και δεν είναι blank),
+        // επιστρέφουμε το API key στη μέθοδο που κάλεσε την getTmdbApiKey().
+    } 
 }
