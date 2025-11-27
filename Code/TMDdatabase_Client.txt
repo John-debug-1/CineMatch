@@ -448,3 +448,25 @@ public class TMDdatabase_Client {
     public String knownForDepartment;
 
 }
+
+  public void save(Movie movie) {
+        String sql =
+                "MERGE INTO movies (id, title, release_date, overview, poster_path, popularity, vote_average) " +
+                        "KEY(id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = Database.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, movie.getId());
+            ps.setString(2, movie.getTitle());
+            ps.setString(3, movie.getReleaseDate());
+            ps.setString(4, movie.getOverview());
+            ps.setString(5, movie.getPosterPath());
+            ps.setDouble(6, movie.getPopularity());
+            ps.setDouble(7, movie.getVoteAverage());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
