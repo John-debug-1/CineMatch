@@ -35,7 +35,7 @@ public class DirectorSearchController {
 
     @FXML private Label statusLabel;   
 
-    private TMDdatabase_Client tmdbClient; // Client για κλήσεις στο TMDB API
+    private TMDdatabase_Client tmdbClient; // Cient για κλήσεις στο TMDB API
 
     // -------------------------------------------------------------------------
     // initialize() εκτελείται αυτόματα όταν φορτωθεί το FXML
@@ -203,6 +203,7 @@ public class DirectorSearchController {
         }
     }
 }
+
 
 
 
