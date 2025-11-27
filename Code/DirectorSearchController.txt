@@ -1,4 +1,4 @@
-package org.MY_APP.User_Interface;
+package org.MY_APP.User_Interface
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -204,6 +204,7 @@ public class DirectorSearchController {
         }
     }
 }
+
 
 
 
