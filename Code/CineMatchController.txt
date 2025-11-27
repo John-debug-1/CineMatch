@@ -55,7 +55,6 @@ public class CineMatchController {
         this.movieService = movieService;
     }
 
-
     //----------------
     @FXML
     public void initialize() {
