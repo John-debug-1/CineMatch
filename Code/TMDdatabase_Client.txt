@@ -135,7 +135,7 @@ public class TMDdatabase_Client {
             return List.of();
         }
     }
-    // ===================== Λεπτομέρειες Ταινίας =====================
+    // ===================== Λεπτομέρειες Ταινιών =====================
 
     public Optional<Movie> getMovieDetails(int movieId) {
         try {
