@@ -22,7 +22,7 @@ import java.util.Locale;
 
 public class CineMatchController {
 
-    //--------FXML references--------
+    //-------- FXML references --------
     @FXML
     private TextField searchField;
 
