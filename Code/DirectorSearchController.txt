@@ -22,18 +22,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class DirectorSearchController {
-
+ 
     // --------- UI Elements συνδεδεμένα με το FXML ---------
-
     @FXML private TextField searchField;       // Πεδίο για πληκτρολόγηση ονόματος σκηνοθέτη
-
     @FXML private FlowPane directorFlowPane;   
     @FXML private ScrollPane directorScrollPane; 
 
-    @FXML private Label titleLabel;     // Όνομα σκηνοθέτη
-    @FXML private Label yearLabel;      // Birthday
-    @FXML private Label ratingLabel;    // Popularity 
-    @FXML private TextArea overviewArea; // Biography + Known 
+    @FXML private Label titleLabel;     
+    @FXML private Label yearLabel;      
+    @FXML private Label ratingLabel;     
+    @FXML private TextArea overviewArea;  
 
     @FXML private Label statusLabel;   
 
@@ -47,7 +45,6 @@ public class DirectorSearchController {
         String apiKey = Config.getTmdbApiKey();
         tmdbClient = new TMDdatabase_Client(apiKey);
         directorFlowPane.prefWidthProperty().bind(directorScrollPane.widthProperty());
-
         statusLabel.setText("CineMatch v1.0.0");
     }
 
@@ -175,9 +172,8 @@ public class DirectorSearchController {
                     getClass().getResource("/cinematch-view.fxml")
             );
 
-            Parent movieRoot = loader.load();
+            Parent movieRoot = loader.load()
 
-            // Παίρνουμε το stage και αλλάζουμε ολόκληρο το scene
             Stage stage = (Stage) statusLabel.getScene().getWindow();
             stage.setScene(new Scene(movieRoot, 1536, 793));
             stage.setTitle("CineMatch – Movie Search");
@@ -196,9 +192,7 @@ public class DirectorSearchController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/actor-search-view.fxml"));
             Parent root = loader.load();
-
             Scene scene = new Scene(root, 1536, 793);
-
             Stage stage = (Stage) searchField.getScene().getWindow();
             stage.setScene(scene);
             stage.setMaximized(true);
@@ -209,3 +203,4 @@ public class DirectorSearchController {
         }
     }
 }
+
