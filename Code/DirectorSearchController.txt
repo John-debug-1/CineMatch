@@ -39,7 +39,7 @@ public class DirectorSearchController {
 
     // -------------------------------------------------------------------------
     // initialize() εκτελείται αυτόματα όταν φορτωθεί το FXML
-    // --------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     @FXML
     public void initialize() {
         String apiKey = Config.getTmdbApiKey();
@@ -203,6 +203,7 @@ public class DirectorSearchController {
         }
     }
 }
+
 
 
 
