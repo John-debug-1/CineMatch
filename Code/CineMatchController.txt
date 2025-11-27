@@ -261,3 +261,67 @@ public class CineMatchController {
     }
 
 }
+
+    /**
+     Εμφανίζει λεπτομέρειες μίας ταινίας στα labels (τίτλο, έτος, βαθμολογία, overview).
+     Εάν το movie είναι null, καθαρίζει τα πεδία.
+     */
+    private void showMovieDetails(Movie movie) {
+        if (movie == null) {
+            clearDetails();
+            return;
+        }
+
+        titleLabel.setText(movie.getTitle() != null ? movie.getTitle() : "");
+        yearLabel.setText(movie.getReleaseDate() != null ? movie.getReleaseDate() : "");
+        ratingLabel.setText(String.format(Locale.US, "%.1f", movie.getVoteAverage()));
+        overviewArea.setText(movie.getOverview() != null ? movie.getOverview() : "");
+    }
+
+    /**
+     Καθαρίζει τα labels με λεπτομέρειες ταινίας.
+     */
+    private void clearDetails() {
+        titleLabel.setText("");
+        yearLabel.setText("");
+        ratingLabel.setText("");
+        overviewArea.clear();
+    }
+
+    /**
+     Παίρνει την ημερομηνία και επιστρέφει μόνο τη χρονιά
+     */
+    private String extractYear(String releaseDate) {
+        if (releaseDate == null || releaseDate.isBlank()) {
+            return "";
+        }
+        if (releaseDate.length() >= 4) {
+            return releaseDate.substring(0, 4);
+        }
+        return releaseDate;
+    }
+
+    /**
+     Δημιουργεί μία “κάρτα ταινίας” (VBox) με poster, τίτλο και βαθμολογία.
+     Περιλαμβάνει hover effects και event click για εμφάνιση λεπτομερειών.
+     */
+    private VBox createSimpleMovieCard(Movie movie) {
+        VBox box = new VBox(8);
+        box.setPrefWidth(150);
+        box.setStyle(
+                "-fx-background-color: white; " +
+                        "-fx-padding: 10; " +
+                        "-fx-border-radius: 10; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);"
+        );
+
+        ImageView posterView = new ImageView();
+        posterView.setFitWidth(150);
+        posterView.setFitHeight(225);
+        posterView.setSmooth(true);
+        posterView.setPreserveRatio(false);
+
+        if (movie.getPosterPath() != null && !movie.getPosterPath().isEmpty()) {
+            posterView.setImage(new Image(movie.getPosterPath(), true));
+        }
