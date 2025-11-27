@@ -196,3 +196,256 @@ public class TMDdatabase_Client {
             return Optional.empty();
         }
     }
+
+ // ===================== DIRECTOR λεπτομέριες =====================
+
+    public Optional<Director> getDirectorDetails(int directorId) {
+        try {
+            String url = BASE_URL + "/person/" + directorId +
+                    "?api_key=" + apiKey + "&language=en-US";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.err.println("TMDb director details failed with status " + response.statusCode());
+                return Optional.empty();
+            }
+
+            TmdbPersonDetailsDTO dto =
+                    objectMapper.readValue(response.body(), TmdbPersonDetailsDTO.class);
+
+            Director director = new Director();
+            director.setId(dto.id);
+            director.setName(dto.name);
+            director.setBiography(dto.biography);
+            director.setBirthday(dto.birthday);
+            director.setPopularity(dto.popularity);
+
+            if (dto.profilePath != null) {
+                director.setProfilePath(IMAGE_BASE_URL + dto.profilePath);
+            }
+
+            return Optional.of(director);
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    // ===================== Helper mapping =====================
+
+    private Movie convert(TmdbMovieDTO dto) {
+        Movie movie = new Movie();
+        movie.setId(dto.getId());
+        movie.setTitle(dto.getTitle());
+        movie.setReleaseDate(dto.getReleaseDate());
+        movie.setOverview(dto.getOverview());
+
+        if (dto.getPosterPath() != null) {
+            movie.setPosterPath(IMAGE_BASE_URL + dto.getPosterPath());
+        }
+
+        movie.setPopularity(dto.getPopularity());
+        movie.setVoteAverage(dto.getVoteAverage());
+        return movie;
+    }
+
+    private Actor convertActorBasic(TmdbPersonDTO dto) {
+        Actor actor = new Actor();
+        actor.setId(dto.id);
+        actor.setName(dto.name);
+
+        if (dto.profilePath != null) {
+            actor.setProfilePath(IMAGE_BASE_URL + dto.profilePath);
+        }
+
+        List<String> knownTitles = new ArrayList<>();
+        if (dto.knownFor != null) {
+            for (TmdbMovieDTO movie : dto.knownFor) {
+                if (movie.getTitle() != null) {
+                    knownTitles.add(movie.getTitle());
+                }
+            }
+        }
+        actor.setKnownForTitles(knownTitles);
+
+        return actor;
+    }
+
+    private Director convertDirectorBasic(TmdbPersonDTO dto) {
+        Director director = new Director();
+        director.setId(dto.id);
+        director.setName(dto.name);
+
+        if (dto.profilePath != null) {
+            director.setProfilePath(IMAGE_BASE_URL + dto.profilePath);
+        }
+
+        List<String> knownTitles = new ArrayList<>();
+        if (dto.knownFor != null) {
+            for (TmdbMovieDTO movie : dto.knownFor) {
+                if (movie.getTitle() != null) {
+                    knownTitles.add(movie.getTitle());
+                }
+            }
+        }
+        director.setKnownForTitles(knownTitles);
+
+        return director;
+    }
+
+    // ===================== DTO classes (JSON mapping) =====================
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TmdbSearchResponse {
+        @JsonProperty("results")
+        private List<TmdbMovieDTO> results;
+
+        public List<TmdbMovieDTO> getResults() {
+            return results;
+        }
+
+        public void setResults(List<TmdbMovieDTO> results) {
+            this.results = results;
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TmdbMovieDTO {
+        @JsonProperty("id")
+        private int id;
+
+        @JsonProperty("title")
+        private String title;
+
+        @JsonProperty("release_date")
+        private String releaseDate;
+
+        @JsonProperty("overview")
+        private String overview;
+
+        @JsonProperty("poster_path")
+        private String posterPath;
+
+        @JsonProperty("popularity")
+        private double popularity;
+
+        @JsonProperty("vote_average")
+        private double voteAverage;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getReleaseDate() {
+            return releaseDate;
+        }
+
+        public void setReleaseDate(String releaseDate) {
+            this.releaseDate = releaseDate;
+        }
+
+        public String getOverview() {
+            return overview;
+        }
+
+        public void setOverview(String overview) {
+            this.overview = overview;
+        }
+
+        public String getPosterPath() {
+            return posterPath;
+        }
+
+        public void setPosterPath(String posterPath) {
+            this.posterPath = posterPath;
+        }
+
+        public double getPopularity() {
+            return popularity;
+        }
+
+        public void setPopularity(double popularity) {
+            this.popularity = popularity;
+        }
+
+        public double getVoteAverage() {
+            return voteAverage;
+        }
+
+        public void setVoteAverage(double voteAverage) {
+            this.voteAverage = voteAverage;
+        }
+
+
+    }
+
+
+
+    // ---- People (actors) DTOs ----
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TmdbPersonSearchResponse {
+        @JsonProperty("results")
+        public List<TmdbPersonDTO> results;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TmdbPersonDTO {
+        @JsonProperty("id")
+        public int id;
+
+        @JsonProperty("name")
+        public String name;
+
+        @JsonProperty("profile_path")
+        public String profilePath;
+
+        @JsonProperty("known_for")
+        public List<TmdbMovieDTO> knownFor;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TmdbPersonDetailsDTO {
+        @JsonProperty("id")
+        public int id;
+
+        @JsonProperty("name")
+        public String name;
+
+        @JsonProperty("profile_path")
+        public String profilePath;
+
+        @JsonProperty("biography")
+        public String biography;
+
+        @JsonProperty("birthday")
+        public String birthday;   // yyyy-MM-dd or null
+
+        @JsonProperty("popularity")
+        public double popularity;
+    }
+
+    @JsonProperty("known_for_department")
+    public String knownForDepartment;
+
+}
