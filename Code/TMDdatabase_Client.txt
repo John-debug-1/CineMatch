@@ -1,0 +1,232 @@
+package org.MY_APP.TMD_database;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.MY_APP.Model.Movie;
+import org.MY_APP.Model.Director;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.MY_APP.Model.Actor;
+
+// Αυτή η κλάση λειτουργεί ως η "γέφυρα" ανάμεσα στην εφαρμογή και το TMDB.
+// Τι κάνει;
+// Στέλνει αιτήματα (Requests) στο internet για να ψάξει ταινίες, ηθοποιούς και σκηνοθέτες.
+//Λαμβάνει τις απαντήσεις σε μορφή JSON.
+//Μετατρέπει αυτές τις απαντήσεις σε αντικείμενα Java (Movie, Actor, Director).
+
+public class TMDdatabase_Client {
+
+    private static final String BASE_URL = "https://api.themoviedb.org/3";  //σταθερή διεύθυνση για το API και φωτογραφίες
+    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+
+    private final String apiKey;
+    private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
+
+    public TMDdatabase_Client(String apiKey) {
+        this.apiKey = apiKey;
+        this.httpClient = HttpClient.newHttpClient(); //σύνδεση στο internet
+        this.objectMapper = new ObjectMapper();
+    }
+
+    // ===================== Αναζήτηση Ταινιών =====================
+
+    public List<Movie> searchMovies(String query) {
+        try {
+            String encoded = URLEncoder.encode(query, StandardCharsets.UTF_8);
+            String url = BASE_URL + "/search/movie?api_key=" + apiKey +
+                    "&language=en-US&query=" + encoded +
+                    "&page=1&include_adult=false";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.err.println("TMDb search failed with status " + response.statusCode());
+                return List.of();
+            }
+
+            TmdbSearchResponse searchResponse =
+                    objectMapper.readValue(response.body(), TmdbSearchResponse.class);
+
+            List<Movie> movies = new ArrayList<>();
+            if (searchResponse.getResults() != null) {
+                for (TmdbMovieDTO dto : searchResponse.getResults()) {
+                    movies.add(convert(dto));
+                }
+            }
+            return movies;
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+
+    }
+
+    // ===================== ACTOR SEARCH =====================
+
+    public List<Actor> searchActors(String query) {
+        try {
+            String encoded = URLEncoder.encode(query, StandardCharsets.UTF_8);
+            String url = BASE_URL + "/search/person?api_key=" + apiKey +
+                    "&language=en-US&query=" + encoded +
+                    "&page=1&include_adult=false";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.err.println("TMDb actor search failed with status " + response.statusCode());
+                return List.of();
+            }
+
+            TmdbPersonSearchResponse searchResponse =
+                    objectMapper.readValue(response.body(), TmdbPersonSearchResponse.class);
+
+            List<Actor> actors = new ArrayList<>();
+            if (searchResponse.results != null) {
+                for (TmdbPersonDTO dto : searchResponse.results) {
+                    actors.add(convertActorBasic(dto));
+                }
+            }
+            return actors;
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    // ===================== DIRECTOR SEARCH =====================
+
+    public List<Director> searchDirectors(String query) {
+        try {
+            String encoded = URLEncoder.encode(query, StandardCharsets.UTF_8);
+            String url = BASE_URL + "/search/person?api_key=" + apiKey +
+                    "&language=en-US&query=" + encoded +
+                    "&page=1&include_adult=false";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.err.println("TMDb director search failed with status " + response.statusCode());
+                return List.of();
+            }
+
+            TmdbPersonSearchResponse searchResponse =
+                    objectMapper.readValue(response.body(), TmdbPersonSearchResponse.class);
+
+            List<Director> directors = new ArrayList<>();
+            if (searchResponse.results != null) {
+                for (TmdbPersonDTO dto : searchResponse.results) {
+                    // you could filter to only directing department if you add that field
+                    directors.add(convertDirectorBasic(dto));
+                }
+            }
+            return directors;
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+    // ===================== DETAILS =====================
+
+    public Optional<Movie> getMovieDetails(int movieId) {
+        try {
+            String url = BASE_URL + "/movie/" + movieId +
+                    "?api_key=" + apiKey + "&language=en-US";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.err.println("TMDb details failed with status " + response.statusCode());
+                return Optional.empty();
+            }
+
+            TmdbMovieDTO dto =
+                    objectMapper.readValue(response.body(), TmdbMovieDTO.class);
+
+            return Optional.of(convert(dto));
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    // ===================== ACTOR DETAILS =====================
+
+    public Optional<Actor> getActorDetails(int actorId) {
+        try {
+            String url = BASE_URL + "/person/" + actorId +
+                    "?api_key=" + apiKey + "&language=en-US";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.err.println("TMDb actor details failed with status " + response.statusCode());
+                return Optional.empty();
+            }
+
+            TmdbPersonDetailsDTO dto =
+                    objectMapper.readValue(response.body(), TmdbPersonDetailsDTO.class);
+
+            Actor actor = new Actor();
+            actor.setId(dto.id);
+            actor.setName(dto.name);
+            actor.setBiography(dto.biography);
+            actor.setBirthday(dto.birthday);
+            actor.setPopularity(dto.popularity);
+
+            if (dto.profilePath != null) {
+                actor.setProfilePath(IMAGE_BASE_URL + dto.profilePath);
+            }
+
+            // knownForTitles can stay null here or be filled from another call if you like
+            return Optional.of(actor);
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
