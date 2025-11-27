@@ -196,7 +196,7 @@ public class TMDdatabase_Client {
         }
     }
 
- // ===================== DIRECTOR λεπτομέριες =====================
+ // ===================== Λεπτομέριες Σκηνοθέτη =====================
 
     public Optional<Director> getDirectorDetails(int directorId) {
         try {
