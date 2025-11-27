@@ -174,7 +174,18 @@ public class CineMatchController {
         overviewArea.clear();
     }
 
-    
+    /**
+     Παίρνει την ημερομηνία και επιστρέφει μόνο τη χρονιά
+     */
+    private String extractYear(String releaseDate) {
+        if (releaseDate == null || releaseDate.isBlank()) {
+            return "";
+        }
+        if (releaseDate.length() >= 4) {
+            return releaseDate.substring(0, 4);
+        }
+        return releaseDate;
+    }
 
     /**
      Δημιουργεί μία “κάρτα ταινίας” (VBox) με poster, τίτλο και βαθμολογία.
