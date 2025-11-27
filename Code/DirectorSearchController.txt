@@ -19,7 +19,6 @@ import org.MY_APP.Model.Director;
 import org.MY_APP.TMD_database.TMDdatabase_Client;
 
 import java.util.List;
-
 import java.util.Optional;
 
 public class DirectorSearchController {
@@ -204,6 +203,7 @@ public class DirectorSearchController {
         }
     }
 }
+
 
 
 
