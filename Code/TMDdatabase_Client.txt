@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.MY_APP.Model.Movie;
 import org.MY_APP.Model.Director;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
