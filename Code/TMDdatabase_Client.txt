@@ -39,7 +39,7 @@ public class TMDdatabase_Client {
         this.objectMapper = new ObjectMapper();
     }
 
-    // ===================== Αναζήτηση Ταινιών =====================
+    // ================== Αναζήτηση Ταινιών ==================
 
     public List<Movie> searchMovies(String query) {
         try {
