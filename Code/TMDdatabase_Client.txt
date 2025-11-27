@@ -136,20 +136,15 @@ public class TMDdatabase_Client {
             return List.of();
         }
     }
-    // ===================== DETAILS =====================
+    // ===================== Λεπτομέρειες Ταινίας =====================
 
     public Optional<Movie> getMovieDetails(int movieId) {
         try {
-            String url = BASE_URL + "/movie/" + movieId +
-                    "?api_key=" + apiKey + "&language=en-US";
+            String url = BASE_URL + "/movie/" + movieId + "?api_key=" + apiKey + "&language=en-US";
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .GET()
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
 
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
                 System.err.println("TMDb details failed with status " + response.statusCode());
