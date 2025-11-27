@@ -44,25 +44,18 @@ public class TMDdatabase_Client {
     public List<Movie> searchMovies(String query) {
         try {
             String encoded = URLEncoder.encode(query, StandardCharsets.UTF_8);
-            String url = BASE_URL + "/search/movie?api_key=" + apiKey +
-                    "&language=en-US&query=" + encoded +
-                    "&page=1&include_adult=false";
+            String url = BASE_URL + "/search/movie?api_key=" + apiKey + "&language=en-US&query=" + encoded + "&page=1&include_adult=false";
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .GET()
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build(); //Link της αναζήτησης
 
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString()); //Αναμονή απάντησης
 
             if (response.statusCode() != 200) {
-                System.err.println("TMDb search failed with status " + response.statusCode());
+                System.err.println("TMDb search failed with status " + response.statusCode());  //έλεγχος αν πήγαν όλα σωστά
                 return List.of();
             }
 
-            TmdbSearchResponse searchResponse =
-                    objectMapper.readValue(response.body(), TmdbSearchResponse.class);
+            TmdbSearchResponse searchResponse = objectMapper.readValue(response.body(), TmdbSearchResponse.class); //μετατροπή JSON σε Java Classes
 
             List<Movie> movies = new ArrayList<>();
             if (searchResponse.getResults() != null) {
