@@ -148,6 +148,7 @@ public class CineMatchController {
     }
 
 
+
     /**
      Εμφανίζει λεπτομέρειες μίας ταινίας στα labels (τίτλο, έτος, βαθμολογία, overview).
      Εάν το movie είναι null, καθαρίζει τα πεδία.
