@@ -17,10 +17,9 @@
 *API keys
 
 
-**Version 1.0.0
+**Version 0.0.1
 # UI μονο σε console του intelliJ 
 
-**Version 1.0.1
 #coding για την main κλάση
 
 #Oρισμός κλάσεων με βάση τις λειτουργίες της εφαρμογής
@@ -33,16 +32,16 @@
 
 Kαταγραφή λειτουργιών κάθε νέου version:
 
-**Version 1.1.0 Σχεδιασμός του UI για το πρώτο sprint
+**Version 0.1.0 Σχεδιασμός του UI για το πρώτο sprint
 
 
-**Version 1.1.1 Δημιουργία FXML αρχείων με το scene Builder:
+**Version 0.1.1 Δημιουργία FXML αρχείων με το scene Builder:
 -actor-search-view.fxml
 -cinematch-view.fxml
 -director-search-view.fxml
 
 
-**Version 1.1.2 User Interface coding
+**Version 0.1.2 User Interface coding
 1) User_Interface/CineMatchController
 –Κύριος controller της εφαρμογής (συνδεδεμένος με το βασικό FXML). Διαχειρίζεται τα UI events για την αναζήτηση ταινιών (κουμπιά, text fields), καλεί το MovieService για search/trending κτλ και γεμίζει τα UI στοιχεία (πίνακες, λίστες, labels). Από εδώ πιθανόν ανοίγονται και τα επιμέρους windows για ηθοποιούς/σκηνοθέτες.
 
@@ -56,7 +55,7 @@ Kαταγραφή λειτουργιών κάθε νέου version:
 –Μain class JavaFX της εφαρμογής. Περιέχει την main(), κάνει launch(), φορτώνει το αρχικό FXML και ξεκινά το CineMatch UI.
 
 
-1.1.3 Δημιουργία Τοπικής βάσης δεδομένων και API key configuration class
+**Version 0.1.3 Δημιουργία Τοπικής βάσης δεδομένων και API key configuration class
 1) Config/Config
 –Κεντρική κλάση ρυθμίσεων της εφαρμογής. Φορτώνει και κρατά παραμέτρους όπως TMDb API key, base URL, ρυθμίσεις database κτλ, ώστε να τις χρησιμοποιούν οι υπόλοιπες κλάσεις.
 
@@ -64,12 +63,12 @@ Kαταγραφή λειτουργιών κάθε νέου version:
 –Διαχειρίζεται τη σύνδεση με την τοπική βάση (π.χ. H2). Ανοίγει/κλείνει connection, δημιουργεί πίνακες αν χρειάζεται και παρέχει βασικές μεθόδους εκτέλεσης SQL εντολών (query/update).
 
 
-1.1.4 Προσθήκη class MovieRepo
+**Version 0.1.4 Προσθήκη class MovieRepo
 1) MovieRepository
 –Μετατρέπει αντικείμενα Movie σε εγγραφές στη βάση και το αντίστροφο. Περιέχει μεθόδους όπως save/find/search κτλ και γενικά τα αρχεία των πινάκων ταινιών (ως cache).
 
 
-1.1.5 Κλάσεις μοντέλων 
+**Version 0.1.5 Κλάσεις μοντέλων 
 1) Model/Movie
 –Κλάση μοντέλου για μία ταινία. Κρατά τα δεδομένα μιας ταινίας (id, τίτλος, περιγραφή, ημερομηνία, rating, popularity, posterPath κτλ) με getters/setters και βοηθητικές μεθόδους (toString κτλ).
 
@@ -77,19 +76,20 @@ Kαταγραφή λειτουργιών κάθε νέου version:
 –Κλάση μοντέλου για έναν ηθοποιό. Πεδία όπως id, όνομα, δημοτικότητα, λίστα από ταινίες που είναι γνωστός κτλ. Χρησιμοποιείται για να περνάμε δεδομένα ηθοποιών από TMDb προς το UI/βάση.
 
 3) Model/Director
-–Κλάση μοντέλου για έναν σκηνοθέτη. Παρόμοια λογική με Actor: id, όνομα, βασικές πληροφορίες, πιθανώς φιλμογραφία κτλ.
+–Κλάση μοντέλου για έναν σκηνοθέτη. Παρόμοια λογική με Actor: id, όνομα, βασικές πληροφορίες κτλ.
 
 
-1.1.6 Λειτουργία services και προσθήκη γέφυρας client 
+**Version 0.1.6 Λειτουργία services και προσθήκη γέφυρας client 
 1) Services/MovieService
 –Συνδέει τον TMDatabase_Client με το MovieRepository. Κάνει τις κλήσεις προς TMDb, μετατρέπει τα αποτελέσματα σε Movie objects, ελέγχει/ενημερώνει την cache στη βάση και επιστρέφει έτοιμες λίστες Movie στους controllers.
 
 
 2) TMD_database/TMDatabase_Client
-–Χαμηλού επιπέδου client για το TMDb API. Χτίζει τα HTTP requests (URLs + API key), τα στέλνει, διαβάζει τα JSON responses και τα επιστρέφει (είτε ως raw JSON είτε ήδη χαρτογραφημένα σε αντικείμενα που χρησιμοποιεί το MovieService).
+–Χαμηλού επιπέδου client για το TMDb API. Χτίζει τα HTTP requests (URLs + API key), τα στέλνει, διαβάζει τα JSON responses και τα επιστρέφει (είτε ως JSON είτε σε χαρτογραφημένα αντικείμενα που χρησιμοποιεί το MovieService).
 
 
-****Τελικό version για το sprint1  Version 1.1.7****
+
+****Τελικό version για το sprint1  Version 0.1.7****
 
 
 
