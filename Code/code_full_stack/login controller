@@ -5,7 +5,7 @@ import javafx.scene.control.*;
 import org.MY_APP.Database.UserRepository;
 import org.MY_APP.Model.User;
 
-public class LoginController {
+public class LoginController  {
 
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
