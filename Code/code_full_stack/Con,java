@@ -38,3 +38,24 @@ public class CineMatchController {
     private MovieService movieService;
 
     public void setMovieService(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
+    // =====================================
+    // SEARCH
+    // =====================================
+    @FXML
+    private void onSearch() {
+        String query = searchField.getText().trim();
+        if (query.isEmpty()) return;
+
+        resultFlowPane.getChildren().clear();
+
+        List<Movie> movies = movieService.searchMovies(query);
+        List<Actor> actors = movieService.searchActors(query);
+        List<Director> directors = movieService.searchDirectors(query);
+
+        movies.forEach(this::addMovieCard);
+        actors.forEach(this::addActorCard);
+        directors.forEach(this::addDirectorCard);
+    }
