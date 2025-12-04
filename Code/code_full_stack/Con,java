@@ -59,3 +59,21 @@ public class CineMatchController {
         actors.forEach(this::addActorCard);
         directors.forEach(this::addDirectorCard);
     }
+
+    // =====================================
+    // MOVIE CARD
+    // =====================================
+    private void addMovieCard(Movie movie) {
+        VBox card = makeCard(movie.getPosterPath(), movie.getTitle(), "Movie");
+
+        card.setOnMouseClicked(e -> showMovieDetails(movie));
+
+        resultFlowPane.getChildren().add(card);
+    }
+
+    private void showMovieDetails(Movie movie) {
+        detailsTitle.setText(movie.getTitle());
+        detailsSubtitle.setText("Release: " + movie.getReleaseDate());
+        detailsExtra.setText("Rating: " + movie.getVoteAverage());
+        detailsArea.setText(movie.getOverview());
+    }
