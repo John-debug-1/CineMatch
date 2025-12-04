@@ -99,3 +99,25 @@ public class CineMatchController {
         detailsExtra.setText("Popularity: " + actor.getPopularity());
         detailsArea.setText(actor.getBiography());
     }
+
+    // =====================================
+    // ACTOR CARD
+    // =====================================
+    private void addActorCard(Actor actor) {
+        VBox card = makeCard(actor.getProfilePath(), actor.getName(), "Actor");
+
+        // FIX → getActorDetails returns Optional<Actor>
+        card.setOnMouseClicked(e -> {
+            movieService.getActorDetails(actor.getId())
+                    .ifPresent(this::showActorDetails);
+        });
+
+        resultFlowPane.getChildren().add(card);
+    }
+
+    private void showActorDetails(Actor actor) {
+        detailsTitle.setText(actor.getName());
+        detailsSubtitle.setText("Birthday: " + actor.getBirthday());
+        detailsExtra.setText("Popularity: " + actor.getPopularity());
+        detailsArea.setText(actor.getBiography());
+    }
