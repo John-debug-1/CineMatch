@@ -18,3 +18,23 @@ import org.MY_APP.Model.Actor;
 import org.MY_APP.Model.Director;
 import org.MY_APP.Model.Movie;
 import org.MY_APP.Services.MovieService;
+
+import java.net.URL;
+import java.util.List;
+
+public class CineMatchController {
+
+    @FXML private TextField searchField;
+    @FXML private FlowPane resultFlowPane;
+
+    @FXML private Label detailsTitle;
+    @FXML private Label detailsSubtitle;
+    @FXML private Label detailsExtra;
+    @FXML private TextArea detailsArea;
+
+    @FXML private Button trailerBtn;
+    private String currentTrailerUrl;
+
+    private MovieService movieService;
+
+    public void setMovieService(MovieService movieService) {
