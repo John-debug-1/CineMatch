@@ -11,7 +11,7 @@ public class GameRules
     {
         private final String text;
         private final QuestionType type;
-        private final List<String> choices ;
+        private final List<String> choices;
         private final String correct;
 
         public Question(String text, QuestionType type, List<String> choices, String correct) 
@@ -62,5 +62,6 @@ public class GameRules
     public int getRounds() { return rounds; }
     public int getSecondsPerQuestion() { return secondsPerQuestion; }
 }
+
 
 
