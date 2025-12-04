@@ -121,3 +121,46 @@ public class CineMatchController {
         detailsExtra.setText("Popularity: " + actor.getPopularity());
         detailsArea.setText(actor.getBiography());
     }
+
+    // =====================================
+    // CARD GENERATOR (MODERN UI)
+    // =====================================
+    private VBox makeCard(String imgUrl, String title, String type) {
+        VBox box = new VBox();
+        box.setSpacing(8);
+        box.setPrefWidth(200);
+        box.setMinWidth(200);
+        box.setMaxWidth(200);
+
+        box.setStyle("""
+                -fx-background-color: white;
+                -fx-padding: 12;
+                -fx-border-radius: 12;
+                -fx-background-radius: 12;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
+                """);
+
+        ImageView img = new ImageView();
+        img.setFitWidth(180);
+        img.setFitHeight(260);
+        img.setPreserveRatio(false);
+
+        if (imgUrl != null) {
+            try {
+                img.setImage(new Image(imgUrl, true));
+            } catch (Exception ignored) {}
+        }
+
+        Label label = new Label(title + "\n(" + type + ")");
+        label.setWrapText(true);
+        label.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        box.getChildren().addAll(img, label);
+
+        return box;
+    }
+
+    @FXML
+    private Button toggleBtn;
+
+    private static boolean dark = false;
