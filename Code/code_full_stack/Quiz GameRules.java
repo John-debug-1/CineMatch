@@ -55,13 +55,14 @@ public class GameRules
         if (!q.correct.equals(answer.trim().toLowerCase())) return 0;
         int base = points.get(q.type);
         int bonus = Math.max(0, secondsPerQuestion - timeUsed);
-        return base + bonus;
+        return base + bonus ;
     }
 
     
     public int getRounds() { return rounds; }
     public int getSecondsPerQuestion() { return secondsPerQuestion; }
 }
+
 
 
 
