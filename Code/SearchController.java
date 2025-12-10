@@ -43,7 +43,7 @@ public class SearchController {
         Object loggedUserObj = session.getAttribute("loggedUser");
 
         if (loggedUserObj != null) {
-            User loggedUser = (User) loggedUserObj
+            User loggedUser = (User) loggedUserObj;
 
             // ✅ Αποθήκευση στο DB
             SearchHistory history = new SearchHistory(loggedUser, query);
