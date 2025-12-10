@@ -1,4 +1,4 @@
-package org.MY_APP.main.controller
+package org.MY_APP.main.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.MY_APP.main.service.TmdbService;
