@@ -54,4 +54,4 @@ public class SearchController {
 
         return "search";
     }
-}
+
