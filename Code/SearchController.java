@@ -12,8 +12,6 @@ import org.MY_APP.main.repository.SearchHistoryRepository;
 
 import java.util.Map;
 
-
-
 @Controller
 public class SearchController {
 
