@@ -29,6 +29,7 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 
+   
     // -------- Getters & Setters --------
 
     public int getId() {
