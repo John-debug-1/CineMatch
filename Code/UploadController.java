@@ -32,9 +32,11 @@ public class UploadController {
                     "url", "/uploads/" + savedName
             ));
 
+        
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload failed");
         }
     }
 }
+
 
