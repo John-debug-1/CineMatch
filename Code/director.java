@@ -1,5 +1,4 @@
 package org.MY_APP.Model;
-
 import java.util.List;
 
 // Η κλάση Director περιέχει τα στοιχεία ενός σκηνοθέτη, όπως προφίλ, βιογραφία και
