@@ -1,7 +1,9 @@
 package org.MY_APP.Model;
+
 import java.util.List;
 
 // Η κλάση Director περιέχει τα στοιχεία ενός σκηνοθέτη, όπως προφίλ, βιογραφία και
+
 // τις ταινίες που έχει σκηνοθετήσει, τα οποία λαμβάνονται από το TMDB API.
 
 public class Director {
