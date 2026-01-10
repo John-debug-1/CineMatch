@@ -77,4 +77,3 @@ public class QuizQuestion {
 
     public void setAnswers(List<QuizAnswer> answers) { this.answers = answers; }
 }
-frnfkeebvajf
