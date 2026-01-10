@@ -54,6 +54,7 @@ public class AiQuizQuestionDto {
     }
 
     public void setCorrect(String correct) {
+this.correct = correct;
         
          
     }
