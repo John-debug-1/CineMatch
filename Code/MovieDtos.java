@@ -44,3 +44,8 @@ public class MovieDtos {
         public List<Map<String, Object>> getRecommendations() { return recommendations; }
     }
 }
+public int getMovieId() { return movieId; }
+        public double getAverageScore() { return averageScore; }
+        public String getSentimentLabel() { return sentimentLabel; }
+        public List<Map<String, Object>> getRecommendations() { return recommendations; }
+    }
