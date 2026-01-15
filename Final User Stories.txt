@@ -1,0 +1,108 @@
+User Stories για το Project CineMatch Τεχνολογίας Λογισμικού 2025-2026
+
+
+***Project Manager
+------john_debug_1
+1) Δημιουργία Database με postgram, search history
+
+2) Ολοκλήρωση UI για το SPRINT_1
+
+3) Δημιουργία local Database + Σύνδεση TMDb_client (Classes Database + TMDb_Client)
+-->Tmdb Service TEST
+
+4) Δημιουργία Quiz- AI feature
+
+5) User Authentication
+
+6) Προδιεργασία Application
+
+7) Επικοινωνία με το TMDb_Client
+
+8) Δημιουργία Quiz Guess The Actor
+
+9) Δημιουργία Quiz General Knowledge
+
+10) Αναζήτηση ηθοποιών μέσω TMDb API (Class ActorSearchController)
+-->MovieController TEST
+
+
+-----alexPant0
+1) LoginService
+--> LoginController TEST
+
+2) Αναβάθμιση UI
+
+3) Διόρθωση database bug
+--> User Repository TEST
+
+4) Υλοποίηση Reviews (Αξιολογίση ταινιών)
+
+5) Σχεδιασμός UI της εφαρμογής
+
+6) Mετατροπή UI από JavaFXML σε Html
+
+7) Κύριος έλεγχος οθόνης αναζήτησης ταινιών (Class CineMatchController)
+
+8) Yλοποίηση Search History
+--> UserService ΤEST
+
+9) (Movies/ Streaming Now/ Series) Api feature
+
+
+
+
+
+-----Chris
+1) Κλήση TMD API και λήψη δεδομένων από TMDb (Class TMDatabase_Client) (christiam)
+
+2) Trending Directors
+
+3) (Popular Actors/ Top Rated Directors) Api feature
+
+4) Δημιουργία Profile Page (UI)
+
+5) Luxand_API Research
+
+6) επιδιόρθωση bug στο upload content
+
+------Mparak
+1) Διορθώσεις Quiz
+
+2) Σχεδιασμός UI της εφαρμογής
+
+3) Διαχείριση ταινιών ηθοποιών σκηνοθετών τοπικά (Class MovieService + Actor)
+
+4) Διόρθωση bug (light/dark mode)
+
+5) ActorMatch Game
+
+6) Hugging_Face AI Research
+
+
+------geomouch
+1) Αναζήτηση σκηνοθετών μέσω TMDb API (Class DirectorSearchController)
+
+2) Upload Content (Photos)
+
+3) Trending Series
+
+4) Αναζήτηση σειρών μέσω TMDb API (Class ActorSearchController)
+
+5) TMD_database Research
+
+6) Επίλυση bug σε navigation bar
+
+
+------Kalophss
+1) Αναζήτηση ηθοποιών μέσω TMDb API (Class ActorSearchController)(kalophss)
+
+2) Upload Content (Videos)
+
+3) Trending Movies
+
+4) (Top Rated/ Latest Movies) Api feature
+
+5) Αναζήτηση ταινιών μέσω TMDb API (Class ActorSearchController)
+
+6) Αναζήτηση σκηνοθετών μέσω TMDb API (Class DirectorSearchController)
+
