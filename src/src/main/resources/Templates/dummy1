@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>CineMatch - Αρχική</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        header { background: #333; color: #fff; padding: 1rem; text-align: center; }
+        nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
+        .hero { padding: 50px; text-align: center; background: white; margin: 20px; border-radius: 8px; }
+        .btn { background: #e50914; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎬 CineMatch</h1>
+    <nav>
+        <a href="/">Αρχική</a>
+        <a href="/search">Αναζήτηση</a>
+        <a href="/login">Σύνδεση</a>
+    </nav>
+</header>
+
+<div class="hero">
+    <h2>Καλώς ήρθατε στο CineMatch</h2>
+    <p>Ανακάλυψε ταινίες, φτιάξε λίστες και δες τι βλέπουν οι φίλοι σου.</p>
+    <br>
+    <a href="/search" class="btn">Ξεκίνα την Αναζήτηση</a>
+</div>
+
+</body>
+</html>
