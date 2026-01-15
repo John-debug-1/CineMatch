@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search History - CineMatch</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0f172a;
+            font-family: system-ui, sans-serif;
+            color: #e5e7eb;
+        }
+
+        body.dark-mode {
+            background: #ffffff;
+            color: #111827;
+        }
+
+        .header {
+            backdrop-filter: blur(14px);
+            background: rgba(15, 23, 42, 0.75);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+        }
+
+        /* ✅ COMBINED USER BUTTON (PROFILE + LOGOUT) */
+        .user-combo {
+            display: flex;
+            border-radius: 999px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        /* Κοινό styling και για τα 2 */
+        .user-combo button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            color: white;
+            background: transparent;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        /* ✅ ΓΡΑΜΜΟΥΛΑ ΑΝΑΜΕΣΑ */
+        .user-left {
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* ✅ ΚΑΛΥΤΕΡΟ HOVER */
+        .user-combo button:hover {
+            background: rgba(0,0,0,0.25);
+            transform: translateY(-1px);
+        }
+
+        /* ✅ ΠΙΟ “ΚΛΙΚ-FEEL” ΣΤΟ LOGOUT */
+        .user-right:hover {
+            background: rgba(0,0,0,0.35);
+        }
+
+        body.dark-mode .header {
+            background: rgba(255,255,255,0.7);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            -webkit-background-clip: text;
+            color: transparent;
+            cursor: pointer;
+        }
+
+        .nav-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .history-container {
+            width: 70%;
+            margin: 50px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .history-card {
+            background: rgba(15,23,42,0.85);
+            padding: 18px 22px;
+            border-radius: 14px;
+            border: 1px solid rgba(148,163,184,0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.dark-mode .history-card {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .query-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .query-date {
+            font-size: 14px;
+            opacity: 0.75;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo" onclick="window.location.href='/'">CineMatch</div>
+
+    <div class="nav-btns">
+        <button class="nav-btn" onclick="location.href='/trending'">Trending</button>
+        <button class="nav-btn" onclick="window.location.href='/trending-celebrities'">Trending Actors</button>
+        <button class="nav-btn" onclick="location.href='/upload'">Upload</button>
+        <button class="nav-btn" onclick="window.location.href='/actor-match'">Actor Match</button>
+        <button class="nav-btn" onclick="window.location.href='/sentiment'">Sentiment Search</button>
+        <button class="nav-btn" onclick="location.href='/quiz-selection'">Quiz 🎭</button>
+        <button class="nav-btn" onclick="toggleDarkMode()">𖤓</button>
+        <button class="nav-btn" onclick="location.href='/history'">History</button>
+
+        <!-- 🔥 NOT LOGGED IN -->
+        <th:block th:if="${loggedUser == null}">
+            <button class="nav-btn" onclick="window.location.href='/login'">
+                LogIn / SignUp
+            </button>
+        </th:block>
+
+        <!-- ✅ LOGGED IN -->
+        <th:block th:if="${loggedUser != null}">
+            <div class="user-combo">
+
+                <button class="user-left"
+                        onclick="window.location.href='/profile'">
+                    <span th:text="${loggedUser.fullName}">User</span>
+                </button>
+
+                <button class="user-right"
+                        onclick="window.location.href='/logout'">
+                    Logout
+                </button>
+
+            </div>
+        </th:block>
+    </div>
+</div>
+
+<div class="history-container">
+
+    <h1>🔎 Your Search History</h1>
+
+    <div th:if="${#lists.isEmpty(history)}">
+        <p>No searches yet.</p>
+    </div>
+
+    <div class="history-card" th:each="h : ${history}">
+        <div class="query-text" th:text="${h.query}"></div>
+        <div class="query-date"
+             th:text="${#temporals.format(h.searchedAt, 'dd/MM/yyyy HH:mm')}"></div>
+    </div>
+
+</div>
+
+<script>
+    function toggleDarkMode() {
+        const body = document.body;
+        const isDark = body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+    }
+
+    window.onload = () => {
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    };
+</script>
+
+</body>
+</html>
