@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload File</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background-color: #f0f2f5; }
+        .upload-box { background: white; max-width: 500px; margin: auto; padding: 30px; border-radius: 10px; border: 2px dashed #007bff; text-align: center; }
+        textarea { width: 100%; height: 80px; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;}
+        .btn-upload { background-color: #6f42c1; color: white; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+<div class="upload-box">
+    <h2>📤 Ανέβασε Αρχείο</h2>
+    <p>Επίλεξε μια εικόνα προφίλ ή άλλο αρχείο.</p>
+    
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <br>
+        <textarea name="message" placeholder="Γράψε ένα μήνυμα (προαιρετικό)..."></textarea>
+        <br>
+        <button type="submit" class="btn-upload">Ανέβασμα</button>
+    </form>
+</div>
+
+</body>
+</html>
