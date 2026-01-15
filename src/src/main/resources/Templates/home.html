@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>CineMatch 1.0.0 - Home</title>
+
+    <style>
+        /*********************************
+         GLOBAL STYLES
+        *********************************/
+        body {
+            margin: 0;
+            background: #0f172a;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #e5e7eb;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /*********************************
+         HEADER
+        *********************************/
+        .header {
+            backdrop-filter: blur(14px);
+            background: rgba(15, 23, 42, 0.75);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            -webkit-background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .nav-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 15px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            transition: transform 0.2s linear, opacity 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .login-btn {
+            background: transparent !important;
+            border: 2px solid #f97316;
+            color: #f97316;
+            padding: 10px 22px;
+            font-weight: 700;
+        }
+
+        .login-btn:hover {
+            background: rgba(249,115,22,0.15) !important;
+            transform: translateY(-2px);
+        }
+
+        /* ✅ COMBINED USER BUTTON (PROFILE + LOGOUT) */
+        .user-combo {
+            display: flex;
+            border-radius: 999px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        /* Κοινό styling και για τα 2 */
+        .user-combo button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            color: white;
+            background: transparent;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        /* ✅ ΓΡΑΜΜΟΥΛΑ ΑΝΑΜΕΣΑ */
+        .user-left {
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* ✅ ΚΑΛΥΤΕΡΟ HOVER */
+        .user-combo button:hover {
+            background: rgba(0,0,0,0.25);
+            transform: translateY(-1px);
+        }
+
+        /* ✅ ΠΙΟ “ΚΛΙΚ-FEEL” ΣΤΟ LOGOUT */
+        .user-right:hover {
+            background: rgba(0,0,0,0.35);
+        }
+
+        /*********************************
+         DARK MODE
+        *********************************/
+        body.dark-mode {
+            background: #ffffff;
+            color: #111827;
+        }
+
+        body.dark-mode .header {
+            background: rgba(255,255,255,0.7);
+            border-bottom-color: rgba(0,0,0,0.25);
+        }
+        /*********************************
+         SEARCH BAR
+        *********************************/
+        .search-wrapper {
+            margin: 60px auto;
+            width: 70%;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 18px 24px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.4);
+            background: rgba(15,23,42,0.85);
+            color: #e5e7eb;
+            outline: none;
+            font-size: 18px;
+        }
+
+        .search-input:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 4px rgba(249,115,22,0.35);
+        }
+
+        .search-btn {
+            padding: 15px 28px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            transition: transform 0.2s linear, opacity 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /*********************************
+         CATEGORIES
+        *********************************/
+        .categories-section {
+            width: 100%;
+            max-width: 1100px;
+            margin: 40px auto 70px auto;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 0 20px;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            padding: 25px 20px;
+            border-radius: 18px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .category-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .category-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        /*********************************
+         NETFLIX STYLE ROWS
+        *********************************/
+        .row-block {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .row-title {
+            margin: 0 40px 10px 40px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .scroll-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            padding: 0 40px 20px 40px;
+            scroll-behavior: smooth;
+            white-space: nowrap; /* 🔥 FIX για το πρόβλημα στο layout */
+        }
+
+        .scroll-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-card {
+            min-width: 180px;
+            height: 270px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #1e293b;
+            border: 1px solid rgba(148,163,184,0.3);
+            transition: transform 0.2s ease;
+            display: inline-block; /* 🔥 FIX #2 */
+            vertical-align: top;   /* 🔥 FIX #3 */
+        }
+
+        .scroll-card.actor {
+            min-width: 150px;
+            height: 220px;
+        }
+
+        .scroll-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .scroll-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hover-info {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 8px 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-size: 13px;
+        }
+
+        .hover-title {
+            font-weight: 600;
+            color: #f9fafb;
+        }
+
+        .scroll-card:hover {
+            transform: scale(1.08);
+        }
+
+        .scroll-card:hover .hover-info {
+            opacity: 1;
+        }
+        .row-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: rgba(15,23,42,0.8);
+            color: #e5e7eb;
+            width: 40px;
+            height: 70px;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .row-arrow.left { left: 10px; }
+        .row-arrow.right { right: 10px; }
+
+        .row-arrow:hover {
+            background: rgba(30,64,175,0.9);
+        }
+
+        /*********************************
+         SEARCH RESULTS GRID
+        *********************************/
+        .results-container {
+            width: 90%;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: rgba(15,23,42,0.85);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(148,163,184,0.3);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+            transition: transform 0.2s ease;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover { transform: scale(1.04); }
+
+        .card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: #111827;
+        }
+
+        .card-body {
+            padding: 14px 16px;
+            height: 120px;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #ffffff;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-type {
+            font-size: 14px;
+            color: #f97316;
+            font-weight: 600;
+        }
+
+
+
+
+        .fav-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.65);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .fav-btn:hover {
+            background: rgba(249,115,22,0.95);
+            transform: scale(1.15);
+        }
+
+        .fav-btn.active {
+            background: rgba(239,68,68,0.9);
+        }
+
+
+        .load-more-btn {
+            margin: 10px 40px 30px;
+            padding: 10px 26px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .load-more-btn:hover {
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ⭐ HEADER (όπως ήταν) ⭐ -->
+
+<div class="header">
+    <div class="logo">CineMatch</div>
+
+    <div class="nav-btns">
+        <button class="nav-btn" onclick="window.location.href='/trending'">Trending</button>
+        <button class="nav-btn" onclick="window.location.href='/trending-celebrities'">Trending Actors</button>
+        <button class="nav-btn" onclick="window.location.href='/upload'">Upload</button>
+        <button class="nav-btn" onclick="window.location.href='/actor-match'">Actor Match</button>
+        <button class="nav-btn" onclick="window.location.href='/sentiment'">Sentiment Search</button>
+        <button class="nav-btn" onclick="window.location.href='/quiz-selection'">Quiz 🎭</button>
+        <button class="nav-btn" onclick="toggleDarkMode()">𖤓</button>
+        <button class="nav-btn" onclick="location.href='/history'">History</button>
+
+        <!-- 🔥 NOT LOGGED IN -->
+        <th:block th:if="${loggedUser == null}">
+            <button class="nav-btn" onclick="window.location.href='/login'">
+                LogIn / SignUp
+            </button>
+        </th:block>
+
+        <!-- ✅ LOGGED IN -->
+        <th:block th:if="${loggedUser != null}">
+            <div class="user-combo">
+
+                <button class="user-left"
+                        onclick="window.location.href='/profile'">
+                    <span th:text="${loggedUser.fullName}">User</span>
+                </button>
+
+                <button class="user-right"
+                        onclick="window.location.href='/logout'">
+                    Logout
+                </button>
+
+            </div>
+        </th:block>
+    </div>
+</div>
+
+
+<!-- SEARCH -->
+<div class="search-wrapper">
+    <form action="/search" method="POST" style="display:flex; gap:16px; width:100%;">
+        <input class="search-input" name="query" placeholder="Search..." required>
+        <button class="search-btn">Search</button>
+    </form>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+    <h2 class="section-title">Browse Categories</h2>
+
+    <div class="categories-grid">
+        <a href="#movies-row-block" class="category-card">
+            <div class="category-icon">🎬</div><h3>Movies</h3>
+        </a>
+
+        <a href="#tv-row-block" class="category-card">
+            <div class="category-icon">📺</div><h3>TV Shows</h3>
+        </a>
+
+        <a href="#top-row-block" class="category-card">
+            <div class="category-icon">⭐</div><h3>Top Rated</h3>
+        </a>
+
+        <a href="#actors-row-block" class="category-card">
+            <div class="category-icon">🧑</div><h3>Actors</h3>
+        </a>
+    </div>
+</section>
+
+<!-- 🎬 MOVIES ROW -->
+<div class="row-block" id="movies-row-block">
+    <h2 class="row-title">Movies</h2>
+    <button class="row-arrow left" onclick="scrollRow('movies-row','left')">&#10094;</button>
+    <button class="row-arrow right" onclick="scrollRow('movies-row','right')">&#10095;</button>
+
+    <div id="movies-row" class="scroll-row">
+        <div th:each="m : ${movies}" class="scroll-card">
+            <div class="scroll-card-inner">
+
+                <th:block th:if="${loggedUser != null}">
+                    <button class="fav-btn"
+                            th:attr="data-id=${m['id']}"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+                </th:block>
+
+                <a th:href="@{'/movie/' + ${m['id']}}">
+                    <img th:src="${m['poster_path']} != null ?
+                @{https://image.tmdb.org/t/p/w500/{p}(p=${m['poster_path']})} :
+                @{/images/no-image.png}">
+                </a>
+
+                <div class="hover-info">
+                    <div class="hover-title" th:text="${m['title']}"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 📺 TV ROW -->
+<div class="row-block" id="tv-row-block">
+    <h2 class="row-title">TV Shows</h2>
+    <button class="row-arrow left" onclick="scrollRow('tv-row','left')">&#10094;</button>
+    <button class="row-arrow right" onclick="scrollRow('tv-row','right')">&#10095;</button>
+
+    <div id="tv-row" class="scroll-row">
+        <div th:each="t : ${tvshows}" class="scroll-card">
+            <div class="scroll-card-inner">
+
+                <!-- ❤️ FAVORITE BUTTON -->
+                <th:block th:if="${loggedUser != null}">
+                    <button class="fav-btn"
+                            th:attr="data-id=${t['id']}, data-type='tv'"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+                </th:block>
+
+                <a th:href="@{'/tv/' + ${t['id']}}">
+                    <img th:src="${t['poster_path']} != null ?
+                @{https://image.tmdb.org/t/p/w500/{p}(p=${t['poster_path']})} :
+                @{/images/no-image.png}">
+                </a>
+
+                <div class="hover-info">
+                    <div class="hover-title" th:text="${t['name']}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 📡 STREAMING ROW -->
+<div class="row-block" id="streaming-row-block">
+    <h2 class="row-title">Streaming Now</h2>
+
+    <button class="row-arrow left" onclick="scrollRow('streaming-row','left')">&#10094;</button>
+    <button class="row-arrow right" onclick="scrollRow('streaming-row','right')">&#10095;</button>
+
+    <div id="streaming-row" class="scroll-row">
+
+        <div th:each="s : ${streaming}" class="scroll-card">
+            <div class="scroll-card-inner">
+
+                <!-- ❤️ FAVORITE -->
+                <th:block th:if="${loggedUser != null}">
+                    <button class="fav-btn"
+                            th:attr="data-id=${s['id']}, data-type=${s['media_type']}"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+                </th:block>
+
+                <!-- 🔗 Dynamic link movie or tv -->
+                <a th:href="@{'/' + ${s['media_type']} + '/' + ${s['id']}}">
+                    <img th:src="${s['poster_path']} != null ?
+                        @{https://image.tmdb.org/t/p/w500/{p}(p=${s['poster_path']})} :
+                        @{/images/no-image.png}">
+                </a>
+
+                <div class="hover-info">
+                    <div class="hover-title"
+                         th:text="${s['title']} ?: ${s['name']}"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ⭐ TOP RATED ROW -->
+<div class="row-block" id="top-row-block">
+    <h2 class="row-title">Top Rated</h2>
+    <button class="row-arrow left" onclick="scrollRow('top-row','left')">&#10094;</button>
+    <button class="row-arrow right" onclick="scrollRow('top-row','right')">&#10095;</button>
+
+    <div id="top-row" class="scroll-row">
+        <div th:each="tr : ${topRated}" class="scroll-card">
+            <div class="scroll-card-inner">
+
+                <th:block th:if="${loggedUser != null}">
+                    <button class="fav-btn"
+                            th:attr="data-id=${tr['id']}"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+                </th:block>
+
+                <a th:href="@{'/movie/' + ${tr['id']}}">
+                    <img th:src="${tr['poster_path']} != null ?
+                @{https://image.tmdb.org/t/p/w500/{p}(p=${tr['poster_path']})} :
+                @{/images/no-image.png}">
+                </a>
+
+                <div class="hover-info">
+                    <div class="hover-title" th:text="${tr['title']}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 🆕 LATEST MOVIES ROW -->
+<div class="row-block" id="latest-row-block">
+    <h2 class="row-title">Latest Movies</h2>
+    <button class="row-arrow left" onclick="scrollRow('latest-row','left')">&#10094;</button>
+    <button class="row-arrow right" onclick="scrollRow('latest-row','right')">&#10095;</button>
+
+    <div id="latest-row" class="scroll-row">
+        <div th:each="lm : ${latestMovies}" class="scroll-card">
+            <div class="scroll-card-inner">
+
+                <!-- ❤️ FAVORITE BUTTON -->
+                <th:block th:if="${loggedUser != null}">
+                    <button class="fav-btn"
+                            th:attr="data-id=${lm['id']}"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+                </th:block>
+
+                <a th:href="@{'/movie/' + ${lm['id']}}">
+                    <img th:src="${lm['poster_path']} != null ?
+                        @{https://image.tmdb.org/t/p/w500/{p}(p=${lm['poster_path']})} :
+                        @{/images/no-image.png}">
+                </a>
+
+                <div class="hover-info">
+                    <div class="hover-title" th:text="${lm['title']}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 🎯 MOVIES YOU WILL LIKE -->
+<th:block th:if="${loggedUser != null && recommendedMovies != null}">
+    <div class="row-block" id="recommended-row-block">
+        <h2 class="row-title">Movies You Will Like</h2>
+
+        <button class="row-arrow left" onclick="scrollRow('recommended-row','left')">&#10094;</button>
+        <button class="row-arrow right" onclick="scrollRow('recommended-row','right')">&#10095;</button>
+
+        <div id="recommended-row" class="scroll-row">
+            <div th:each="r : ${recommendedMovies}" class="scroll-card">
+                <div class="scroll-card-inner">
+
+                    <button class="fav-btn"
+                            th:attr="data-id=${r['id']}"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+
+                    <a th:href="@{'/movie/' + ${r['id']}}">
+                        <img th:src="${r['poster_path']} != null ?
+                        @{https://image.tmdb.org/t/p/w500/{p}(p=${r['poster_path']})} :
+                        @{/images/no-image.png}">
+                    </a>
+
+                    <div class="hover-info">
+                        <div class="hover-title" th:text="${r['title']}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<!-- 🧑 ACTORS ROW -->
+<div class="row-block" id="actors-row-block">
+    <h2 class="row-title">Popular Actors</h2>
+
+    <button class="row-arrow left" onclick="scrollRow('actors-row','left')">&#10094;</button>
+    <button class="row-arrow right" onclick="scrollRow('actors-row','right')">&#10095;</button>
+
+    <div id="actors-row" class="scroll-row">
+
+        <div th:each="a : ${actors}" class="scroll-card actor">
+            <div class="scroll-card-inner">
+
+                <th:block th:if="${loggedUser != null}">
+                    <button class="fav-btn"
+                            th:attr="data-id=${a['id']}, data-type='actor'"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+                </th:block>
+
+                <a th:href="@{'/person/' + ${a['id']}}">
+                    <img th:src="${a['profile_path']} != null ?
+                        @{https://image.tmdb.org/t/p/w500/{p}(p=${a['profile_path']})} :
+                        @{/images/no-image.png}">
+                </a>
+
+                <div class="hover-info">
+                    <div class="hover-title" th:text="${a['name']}"></div>
+                </div>
+
+            </div> <!-- ✅ closes scroll-card-inner -->
+        </div>     <!-- ✅ closes scroll-card -->
+
+    </div>
+</div>
+
+<!-- 🎬 TOP RATED DIRECTORS -->
+<div class="row-block" id="directors-row-block">
+    <h2 class="row-title">Top Rated Directors (7+ ⭐)</h2>
+
+    <button class="row-arrow left" onclick="scrollRow('directors-row','left')">&#10094;</button>
+    <button class="row-arrow right" onclick="scrollRow('directors-row','right')">&#10095;</button>
+
+    <div id="directors-row" class="scroll-row">
+        <div th:each="d : ${topDirectors}" class="scroll-card actor">
+            <div class="scroll-card-inner">
+
+                <th:block th:if="${loggedUser != null}">
+                    <button class="fav-btn"
+                            th:attr="data-id=${d['id']}, data-type='director'"
+                            onclick="toggleFavorite(this)">
+                        🤍
+                    </button>
+                </th:block>
+
+                <a th:href="@{'/person/' + ${d['id']}}">
+                    <img th:src="${d['profile_path']} != null ?
+                @{https://image.tmdb.org/t/p/w500/{p}(p=${d['profile_path']})} :
+                @{/images/no-image.png}">
+                </a>
+
+                <div class="hover-info">
+                    <div class="hover-title" th:text="${d['name']}"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SEARCH RESULTS -->
+<div th:if="${results != null}" class="results-container">
+
+    <div th:each="item : ${results['results']}" class="card">
+
+        <a th:href="@{'/' + ${item['media_type']} + '/' + ${item['id']}}">
+
+            <!-- MOVIE -->
+            <img th:if="${item['media_type']} == 'movie'"
+                 th:src="${item['poster_path']} != null ?
+                    @{https://image.tmdb.org/t/p/w500/{p}(p=${item['poster_path']})} :
+                    @{/images/no-image.png}"
+                 alt="movie">
+
+            <!-- TV SHOW -->
+            <img th:if="${item['media_type']} == 'tv'"
+                 th:src="${item['poster_path']} != null ?
+                    @{https://image.tmdb.org/t/p/w500/{p}(p=${item['poster_path']})} :
+                    @{/images/no-image.png}"
+                 alt="tv">
+
+            <!-- PERSON -->
+            <img th:if="${item['media_type']} == 'person'"
+                 th:src="${item['profile_path']} != null ?
+                    @{https://image.tmdb.org/t/p/w500/{p}(p=${item['profile_path']})} :
+                    @{/images/no-image.png}"
+                 alt="person">
+
+        </a>
+
+        <div class="card-body">
+            <div class="card-title"
+                 th:text="${item['title']} ?: ${item['name']}"></div>
+
+            <div class="card-type"
+                 th:text="'(' + ${item['media_type']} + ')'"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ✅ User Agreement Modal -->
+<div id="agreement-modal" style="display:none;
+     position:fixed; inset:0; background:rgba(0,0,0,0.7);
+     z-index:9999; align-items:center; justify-content:center;">
+
+    <div style="
+      background:#0f172a; color:#e5e7eb;
+      max-width:720px; width:92%;
+      padding:28px;
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,0.25);
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+  ">
+        <h2 style="color:#f97316; margin-top:0;">CineMatch – User Agreement</h2>
+
+        <div style="max-height:300px; overflow:auto; font-size:14px; line-height:1.6;">
+            <p>By using CineMatch you agree that:</p>
+            <ul>
+                <li>This is an educational/portfolio project.</li>
+                <li>You are responsible for your content (reviews/uploads).</li>
+                <li>No illegal/abusive/copyrighted uploads.</li>
+                <li>The app is provided “as is”.</li>
+            </ul>
+        </div>
+
+        <div style="margin-top:18px; display:flex; justify-content:flex-end; gap:12px;">
+
+            <!-- ❌ Decline -->
+            <button id="agreementDeclineBtn"
+                    style="padding:10px 18px; border-radius:999px;
+                 background:transparent;
+                 color:#f97316;
+                 border:2px solid #f97316;
+                 font-weight:800;
+                 cursor:pointer;">
+                Decline
+            </button>
+
+            <!-- ✅ Accept -->
+            <button id="agreementAcceptBtn"
+                    style="padding:10px 18px; border-radius:999px;
+                 background:linear-gradient(135deg,#f97316,#ec4899);
+                 color:white;
+                 border:none;
+                 font-weight:800;
+                 cursor:pointer;">
+                I Agree
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+<script th:inline="javascript">
+    const IS_LOGGED_IN = /*[[${loggedUser != null}]]*/ false;
+    const needsAgreement = /*[[${session.needsAgreement != null}]]*/ false;
+</script>
+
+<script>
+
+
+    function scrollRow(id, direction) {
+        const row = document.getElementById(id);
+        if (!row) return;
+
+        const amount = row.clientWidth * 0.8;
+        row.scrollBy({
+            left: direction === 'right' ? amount : -amount,
+            behavior: 'smooth'
+        });
+    }
+
+    function toggleDarkMode() {
+        const body = document.body;
+        const isDark = body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+    }
+
+    window.onload = () => {
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    };
+
+    /* ✅ ✅ ✅ ΕΝΑΣ ΚΑΙ ΜΟΝΑΔΙΚΟΣ ΜΗΧΑΝΙΣΜΟΣ FAVORITES ✅ ✅ ✅ */
+        function initFavorites() {
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+
+            const id = btn.dataset.id;
+            const type = btn.dataset.type; // movie ή tv
+
+            let url = '';
+
+            if (type === 'tv') {
+                url = '/favorites/tv/is-favorite/' + id;
+            } else if (type === 'actor') {
+                url = '/favorites/actor/is-favorite/' + id;
+            } else if (type === 'director') {
+                url = '/favorites/director/is-favorite/' + id;
+            } else {
+                url = '/favorites/is-favorite/' + id;
+            }
+
+            fetch(url)
+                .then(res => res.json())
+                .then(isFav => {
+                    if (isFav === true) {
+                        btn.innerText = '❤️';
+                        btn.classList.add('active');
+                    } else {
+                        btn.innerText = '🤍';
+                        btn.classList.remove('active');
+                    }
+                });
+        });
+    }
+
+
+    function toggleFavorite(btn) {
+        const id = btn.dataset.id;
+        const type = btn.dataset.type;
+        const isActive = btn.classList.contains('active');
+
+        let url = '';
+
+        if (type === 'tv') {
+            url = isActive
+                ? '/favorites/tv/remove/' + id
+                : '/favorites/tv/add/' + id;
+
+        } else if (type === 'actor') {
+            url = isActive
+                ? '/favorites/actor/remove/' + id
+                : '/favorites/actor/add/' + id;
+
+        } else if (type === 'director') {
+            url = isActive
+                ? '/favorites/director/remove/' + id
+                : '/favorites/director/add/' + id;
+
+        } else { // movie
+            url = isActive
+                ? '/favorites/remove/' + id
+                : '/favorites/add/' + id;
+        }
+
+        fetch(url, { method: 'POST' })
+            .then(() => {
+                btn.classList.toggle('active');
+                btn.innerText = btn.classList.contains('active') ? '❤️' : '🤍';
+            });
+    }
+
+    /* ✅ LOAD MORE SYSTEM */
+    const pageMap = {
+        movies: 1,
+        latest: 1,
+        tv: 1,
+        top: 1,
+        recommended: 1,   // ✅ ΝΕΟ
+        directors: 1,
+        streaming: 1
+    };
+
+    function loadMore(type, rowId) {
+        pageMap[type]++;
+
+        fetch(`/load-more?type=${type}&page=${pageMap[type]}`)
+            .then(res => res.json())
+            .then(data => {
+                const row = document.getElementById(rowId);
+
+                data.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "scroll-card";
+
+                    card.innerHTML = `
+                        <div class="scroll-card-inner">
+
+                            ${IS_LOGGED_IN ? `
+                            <button class="fav-btn"
+                                data-type="${type === 'tv' ? 'tv' : 'movie'}"
+                                data-id="${item.id}"
+                                onclick="toggleFavorite(this)">
+                                🤍
+                            </button>
+                            ` : ``}
+
+                            <a href="/${type === 'tv' ? 'tv' : 'movie'}/${item.id}">
+                                <img src="${item.poster_path ?
+                                    'https://image.tmdb.org/t/p/w500/' + item.poster_path :
+                                    '/images/no-image.png'}">
+                            </a>
+
+                            <div class="hover-info">
+                                <div class="hover-title">${item.title || item.name}</div>
+                            </div>
+                        </div>
+                    `;
+
+                    row.appendChild(card);
+                });
+
+                initFavorites(); // ✅ Ενεργοποιεί ❤️ στα νέα
+            });
+    }
+
+    /* ✅ AUTO LOAD ΣΤΟ ΤΕΡΜΑ */
+    document.querySelectorAll('.scroll-row').forEach(row => {
+        row.addEventListener('scroll', function () {
+            if (row.scrollLeft + row.clientWidth >= row.scrollWidth - 5) {
+                if (row.id === 'movies-row') loadMore('movies', 'movies-row');
+                if (row.id === 'latest-row') loadMore('latest', 'latest-row');
+                if (row.id === 'tv-row') loadMore('tv', 'tv-row');
+                if (row.id === 'streaming-row') loadMore('streaming', 'streaming-row');
+                if (row.id === 'top-row') loadMore('top', 'top-row');
+                if (row.id === 'recommended-row') loadMore('recommended', 'recommended-row');
+            }
+        });
+    });
+
+    /* ✅ ΑΡΧΙΚΟΠΟΙΗΣΗ ΣΤΗΝ ΕΚΚΙΝΗΣΗ */
+    document.addEventListener("DOMContentLoaded", initFavorites);
+
+
+
+    window.addEventListener("load", () => {
+
+
+    if (needsAgreement) {
+      document.getElementById("agreement-modal").style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+
+    const acceptBtn = document.getElementById("agreementAcceptBtn");
+    if (acceptBtn) {
+      acceptBtn.addEventListener("click", async () => {
+        await fetch("/agreement/accept", { method: "POST" });
+        document.getElementById("agreement-modal").style.display = "none";
+        document.body.style.overflow = "auto";
+      });
+    }
+
+    const declineBtn = document.getElementById("agreementDeclineBtn");
+    if (declineBtn) {
+      declineBtn.addEventListener("click", () => {
+        window.location.href = "/logout";
+      });
+    }
+  });
+</script>
+
+
+</body>
+</html>
