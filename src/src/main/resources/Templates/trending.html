@@ -13,6 +13,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
+       
         /* HEADER */
         .header {
             backdrop-filter: blur(14px);
@@ -146,6 +147,7 @@
             font-size: 16px;
         }
 
+       
         /* ============================
            DARK MODE FIX — SAME AS HOME
         ============================ */
@@ -229,7 +231,8 @@
 </div>
 
 
-<!-- TV SERIES -->
+
+    <!-- TV SERIES -->
 <h2 class="section-title">Top 10 TV Series</h2>
 <div class="grid">
     <div class="card" th:each="s : ${series}" th:onclick="'window.location.href=\'/tv/' + ${s['id']} + '\''">
@@ -258,3 +261,4 @@
 
 </body>
 </html>
+
