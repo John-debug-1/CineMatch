@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>CineMatch • Quiz</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0f172a;
+            font-family: system-ui;
+            color: #e5e7eb;
+            transition: 0.3s;
+        }
+
+        body.dark-mode {
+            background: #ffffff;
+            color: #111827;
+        }
+
+        body.dark-mode .quiz-box {
+            background: #f1f5f9;
+        }
+
+        body.dark-mode .header {
+            background: rgba(255,255,255,0.7);
+        }
+
+        /* ✅ HEADER */
+        .header {
+            backdrop-filter: blur(14px);
+            background: rgba(15, 23, 42, 0.75);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            -webkit-background-clip: text;
+            color: transparent;
+            cursor: pointer;
+        }
+
+        .nav-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 15px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* ✅ COMBINED USER BUTTON (PROFILE + LOGOUT) */
+        .user-combo {
+            display: flex;
+            border-radius: 999px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        /* Κοινό styling και για τα 2 */
+        .user-combo button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            color: white;
+            background: transparent;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        /* ✅ ΓΡΑΜΜΟΥΛΑ ΑΝΑΜΕΣΑ */
+        .user-left {
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* ✅ ΚΑΛΥΤΕΡΟ HOVER */
+        .user-combo button:hover {
+            background: rgba(0,0,0,0.25);
+            transform: translateY(-1px);
+        }
+
+        /* ✅ ΠΙΟ “ΚΛΙΚ-FEEL” ΣΤΟ LOGOUT */
+        .user-right:hover {
+            background: rgba(0,0,0,0.35);
+        }
+
+        /* ✅ QUIZ CONTAINER */
+        .quiz-container {
+            max-width: 650px;
+            margin: 80px auto;
+            padding: 40px;
+        }
+
+        .quiz-box {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+
+        .question-count {
+            font-size: 15px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .answer-btn {
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            background: #334155;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .answer-btn:hover {
+            background: #f97316;
+            transform: scale(1.03);
+        }
+
+        .quiz-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .quiz-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            transition: 0.2s;
+        }
+
+        .quiz-btn.gray {
+            background: #334155;
+        }
+
+        .quiz-btn.red {
+            background: #dc2626;
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        .score-box {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #f97316;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ HEADER -->
+<div class="header">
+    <div class="logo" onclick="window.location.href='/home'">CineMatch</div>
+
+    <div class="nav-btns">
+        <button class="nav-btn" onclick="window.location.href='/trending'">Trending</button>
+        <button class="nav-btn" onclick="window.location.href='/trending-celebrities'">Trending Actors</button>
+        <button class="nav-btn" onclick="window.location.href='/upload'">Upload</button>
+        <button class="nav-btn" onclick="window.location.href='/actor-match'">Actor Match</button>
+        <button class="nav-btn" onclick="window.location.href='/sentiment'">Sentiment Search</button>
+        <button class="nav-btn" onclick="window.location.href='/quiz-selection'">Quiz 🎭</button>
+        <button class="nav-btn" onclick="toggleDarkMode()">𖤓</button>
+        <button class="nav-btn" onclick="location.href='/history'">History</button>
+
+        <!-- 🔥 NOT LOGGED IN -->
+        <th:block th:if="${loggedUser == null}">
+            <button class="nav-btn" onclick="window.location.href='/login'">
+                LogIn / SignUp
+            </button>
+        </th:block>
+
+        <!-- ✅ LOGGED IN -->
+        <th:block th:if="${loggedUser != null}">
+            <div class="user-combo">
+
+                <button class="user-left"
+                        onclick="window.location.href='/profile'">
+                    <span th:text="${loggedUser.fullName}">User</span>
+                </button>
+
+                <button class="user-right"
+                        onclick="window.location.href='/logout'">
+                    Logout
+                </button>
+
+            </div>
+        </th:block>
+    </div>
+</div>
+
+<!-- ✅ QUIZ -->
+<div class="quiz-container">
+    <div class="quiz-box">
+
+        <div class="question-count" id="questionCount">Question 1 / 10</div>
+        <div class="question" id="questionText"></div>
+
+        <div class="answers">
+            <button class="answer-btn" onclick="selectAnswer(0)"></button>
+            <button class="answer-btn" onclick="selectAnswer(1)"></button>
+            <button class="answer-btn" onclick="selectAnswer(2)"></button>
+            <button class="answer-btn" onclick="selectAnswer(3)"></button>
+        </div>
+
+        <div class="quiz-actions">
+            <button class="quiz-btn gray" onclick="skipQuestion()">Skip</button>
+            <button class="quiz-btn" onclick="submitAnswer()">Submit</button>
+        </div>
+
+        <div class="quiz-actions">
+            <button class="quiz-btn gray" onclick="window.location.href='/quiz-selection'">Leaderboard</button>
+            <button class="quiz-btn red" onclick="restartQuiz()">Play Again</button>
+        </div>
+
+        <div class="score-box" id="finalScore"></div>
+
+    </div>
+</div>
+
+<!-- ✅ JS -->
+<script>
+    let quiz = null;
+    let currentQuestionIndex = 0;
+    let selectedOption = null;
+
+    const qText = document.getElementById("questionText");
+    const answers = document.querySelectorAll(".answer-btn");
+    const qCount = document.getElementById("questionCount");
+    const finalScore = document.getElementById("finalScore");
+
+    async function startQuiz() {
+        const res = await fetch("/api/quiz/start-actor", { method: "POST" });
+        quiz = await res.json();
+        currentQuestionIndex = 0;
+        showQuestion();
+    }
+
+    function showQuestion() {
+        selectedOption = null;
+        const q = quiz.questions[currentQuestionIndex];
+
+        qText.innerText = q.questionText;
+        qCount.innerText = `Question ${currentQuestionIndex + 1} / ${quiz.totalQuestions}`;
+
+        answers[0].innerText = q.optionA;
+        answers[1].innerText = q.optionB;
+        answers[2].innerText = q.optionC;
+        answers[3].innerText = q.optionD;
+
+        answers.forEach(btn => btn.style.background = "#334155");
+    }
+
+    function selectAnswer(i) {
+        selectedOption = ["A", "B", "C", "D"][i];
+        answers.forEach(btn => btn.style.background = "#334155");
+        answers[i].style.background = "#f97316";
+    }
+
+    async function submitAnswer() {
+        if (!selectedOption) return;
+
+        const q = quiz.questions[currentQuestionIndex];
+
+        await fetch("/api/quiz/answer", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                questionId: q.id,
+                selectedOption: selectedOption
+            })
+        });
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < quiz.questions.length) {
+            showQuestion();
+        } else {
+            finishQuiz();
+        }
+    }
+
+    function skipQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quiz.questions.length) {
+            showQuestion();
+        } else {
+            finishQuiz();
+        }
+    }
+
+    async function finishQuiz() {
+        const res = await fetch(`/api/quiz/finish/${quiz.id}`, { method: "POST" });
+        const finishedQuiz = await res.json();
+
+        qText.innerText = "Actor Quiz Completed 🎬";
+        document.querySelector(".answers").style.display = "none";
+        document.querySelectorAll(".quiz-actions")[0].style.display = "none";
+
+        finalScore.style.display = "block";
+        finalScore.innerText = `Your Score: ${finishedQuiz.score} / ${finishedQuiz.totalQuestions}`;
+    }
+
+    function restartQuiz(){
+        location.reload();
+    }
+
+    function toggleDarkMode(){
+        const body = document.body;
+        const isDark = body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+    }
+
+    window.onload = () => {
+        if(localStorage.getItem("darkMode")==="true"){
+            document.body.classList.add("dark-mode");
+        }
+        startQuiz();
+    };
+</script>
+
+</body>
+</html>
