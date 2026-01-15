@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Εγγραφή στο CineMatch</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #e9ecef; font-family: sans-serif; }
+        .register-card { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 350px; }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #218838; }
+        .login-link { text-align: center; margin-top: 15px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<div class="register-card">
+    <h2>📝 Δημιουργία Λογαριασμού</h2>
+    <form action="/register" method="POST">
+        <div class="form-group">
+            <label for="fullName">Ονοματεπώνυμο</label>
+            <input type="text" id="fullName" name="fullName" placeholder="π.χ. Γιώργος Παπαδόπουλος" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="name@example.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Κωδικός</label>
+            <input type="password" id="password" name="password" placeholder="Τουλάχιστον 6 χαρακτήρες" required>
+        </div>
+
+        <button type="submit">Εγγραφή</button>
+    </form>
+    <p class="login-link">Έχεις ήδη λογαριασμό; <a href="/login">Σύνδεση</a></p>
+</div>
+
+</body>
+</html>
