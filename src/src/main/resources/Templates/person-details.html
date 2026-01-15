@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${person['name']}">Person Details</title>
+
+    <style>
+        /* GLOBAL */
+        body {
+            margin: 0;
+            background: #0f172a;
+            font-family: system-ui, sans-serif;
+            color: #e5e7eb;
+        }
+
+        /* LIGHT MODE */
+        body.dark-mode {
+            background: #ffffff;
+            color: #111827;
+        }
+
+        body.dark-mode .header {
+            background: rgba(255,255,255,0.7);
+            border-bottom-color: rgba(0,0,0,0.25);
+        }
+
+        /* HEADER */
+        .header {
+            backdrop-filter: blur(14px);
+            background: rgba(15, 23, 42, 0.75);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            -webkit-background-clip: text;
+            color: transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .nav-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 15px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .login-btn {
+            background: transparent !important;
+            border: 2px solid #f97316;
+            color: #f97316;
+            padding: 10px 22px;
+            font-weight: 700;
+        }
+
+        .login-btn:hover {
+            background: rgba(249,115,22,0.15) !important;
+            transform: translateY(-2px);
+        }
+
+        /* ✅ COMBINED USER BUTTON (PROFILE + LOGOUT) */
+        .user-combo {
+            display: flex;
+            border-radius: 999px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        .user-combo button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            color: white;
+            background: transparent;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .user-left {
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .user-combo button:hover {
+            background: rgba(0,0,0,0.25);
+            transform: translateY(-1px);
+        }
+
+        .user-right:hover {
+            background: rgba(0,0,0,0.35);
+        }
+
+        /* CONTAINER */
+        .container {
+            display: flex;
+            gap: 40px;
+            padding: 40px;
+            padding-top: 30px;
+        }
+
+        .photo {
+            width: 330px;
+            height: 480px;
+            border-radius: 22px;
+            object-fit: cover;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            background: #111827;
+        }
+
+        .info {
+            max-width: 750px;
+        }
+
+        h1 {
+            font-size: 38px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            display: inline-block;
+            margin-right: 14px;
+        }
+
+        .label {
+            font-weight: 700;
+            color: #f97316;
+        }
+
+        .bio {
+            margin-top: 18px;
+            line-height: 1.65;
+            font-size: 18px;
+            white-space: pre-line;
+        }
+
+        /* ❤️ FAVORITE BUTTON */
+        .fav-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+            vertical-align: middle;
+        }
+
+        .fav-btn:hover {
+            background: rgba(249,115,22,0.95);
+            transform: scale(1.15);
+        }
+
+        .fav-btn.active {
+            background: rgba(239,68,68,0.9);
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="header">
+    <div class="logo" onclick="window.location.href='/home'">CineMatch</div>
+
+    <div class="nav-btns">
+        <button class="nav-btn" onclick="window.location.href='/trending'">Trending</button>
+        <button class="nav-btn" onclick="window.location.href='/trending-celebrities'">Trending Actors</button>
+        <button class="nav-btn" onclick="window.location.href='/upload'">Upload</button>
+        <button class="nav-btn" onclick="window.location.href='/actor-match'">Actor Match</button>
+        <button class="nav-btn" onclick="window.location.href='/sentiment'">Sentiment Search</button>
+        <button class="nav-btn" onclick="window.location.href='/quiz-selection'">Quiz 🎭</button>
+        <button class="nav-btn" onclick="toggleDarkMode()">𖤓</button>
+        <button class="nav-btn" onclick="location.href='/history'">History</button>
+
+        <!-- 🔥 NOT LOGGED IN -->
+        <th:block th:if="${loggedUser == null}">
+            <button class="nav-btn" onclick="window.location.href='/login'">
+                LogIn / SignUp
+            </button>
+        </th:block>
+
+        <!-- ✅ LOGGED IN -->
+        <th:block th:if="${loggedUser != null}">
+            <div class="user-combo">
+
+                <button class="user-left"
+                        onclick="window.location.href='/profile'">
+                    <span th:text="${loggedUser.fullName}">User</span>
+                </button>
+
+                <button class="user-right"
+                        onclick="window.location.href='/logout'">
+                    Logout
+                </button>
+
+            </div>
+        </th:block>
+
+    </div>
+</div>
+
+<div class="container">
+
+    <img class="photo"
+         th:src="${person['profile_path']} != null ?
+                 |https://image.tmdb.org/t/p/w500${person['profile_path']}| :
+                 '/images/no-image.png'"
+         alt="Profile">
+
+    <div class="info">
+
+        <!-- ❤️ LIKE BUTTON (ACTOR/DIRECTOR) -->
+        <th:block th:if="${loggedUser != null}">
+            <h1 th:text="${person['name']}"></h1>
+
+            <button class="fav-btn"
+                    th:attr="
+                        data-id=${person['id']},
+                        data-type=${person['known_for_department']}"
+                    onclick="toggleFavorite(this)">
+                🤍
+            </button>
+        </th:block>
+
+        <th:block th:if="${loggedUser == null}">
+            <h1 th:text="${person['name']}"></h1>
+        </th:block>
+
+        <p><span class="label">Department:</span>
+            <span th:text="${person['known_for_department']}"></span></p>
+
+        <p><span class="label">Birthday:</span>
+            <span th:text="${person['birthday']}"></span></p>
+
+        <p><span class="label">Popularity:</span>
+            <span th:text="${person['popularity']}"></span></p>
+
+        <div class="bio" th:text="${person['biography']}"></div>
+
+    </div>
+
+</div>
+
+<script>
+    function toggleDarkMode() {
+        const body = document.body;
+        const isDark = body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+    }
+
+    window.onload = () => {
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    };
+
+    // ✅ ΕΛΕΓΧΟΣ ΑΝ ΕΙΝΑΙ ΗΔΗ FAVORITE (actor/director)
+    function initFavorites() {
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            const id = btn.dataset.id;
+            const department = btn.dataset.type || ''; // Acting / Directing
+
+            // Αν είναι Directing → director, αλλιώς actor
+            const type = department === 'Directing' ? 'director' : 'actor';
+
+            const url = `/favorites/${type}/is-favorite/` + id;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(isFav => {
+                    if (isFav === true) {
+                        btn.innerText = '❤️';
+                        btn.classList.add('active');
+                    } else {
+                        btn.innerText = '🤍';
+                        btn.classList.remove('active');
+                    }
+                })
+                .catch(err => console.error('is-favorite error', err));
+        });
+    }
+
+    // ✅ TOGGLE FAVORITE (actor ή director)
+    function toggleFavorite(btn) {
+        const id = btn.dataset.id;
+        const department = btn.dataset.type || '';
+
+        const type = department === 'Directing' ? 'director' : 'actor';
+        const isActive = btn.classList.contains('active');
+
+        const url = isActive
+            ? `/favorites/${type}/remove/` + id
+            : `/favorites/${type}/add/` + id;
+
+        fetch(url, { method: 'POST' })
+            .then(() => {
+                btn.classList.toggle('active');
+                btn.innerText = btn.classList.contains('active') ? '❤️' : '🤍';
+            })
+            .catch(err => console.error('toggleFavorite error', err));
+    }
+
+    document.addEventListener("DOMContentLoaded", initFavorites);
+</script>
+
+</body>
+</html>
