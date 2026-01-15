@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trending</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0f172a;
+            font-family: system-ui, sans-serif;
+            color: #e5e7eb;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* HEADER */
+        .header {
+            backdrop-filter: blur(14px);
+            background: rgba(15, 23, 42, 0.75);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+            transition: background 0.3s;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            -webkit-background-clip: text;
+            color: transparent;
+            cursor: pointer;
+        }
+
+        .nav-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 15px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .login-btn {
+            background: transparent !important;
+            border: 2px solid #f97316;
+            color: #f97316;
+            padding: 10px 22px;
+            font-weight: 700;
+        }
+
+        .login-btn:hover {
+            background: rgba(249,115,22,0.15) !important;
+            transform: translateY(-2px);
+        }
+        /* ✅ COMBINED USER BUTTON (PROFILE + LOGOUT) */
+        .user-combo {
+            display: flex;
+            border-radius: 999px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        /* Κοινό styling και για τα 2 */
+        .user-combo button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            color: white;
+            background: transparent;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        /* ✅ ΓΡΑΜΜΟΥΛΑ ΑΝΑΜΕΣΑ */
+        .user-left {
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* ✅ ΚΑΛΥΤΕΡΟ HOVER */
+        .user-combo button:hover {
+            background: rgba(0,0,0,0.25);
+            transform: translateY(-1px);
+        }
+
+        /* ✅ ΠΙΟ “ΚΛΙΚ-FEEL” ΣΤΟ LOGOUT */
+        .user-right:hover {
+            background: rgba(0,0,0,0.35);
+        }
+
+        /* GRID */
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 25px 40px 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 0 40px 40px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            background: #334155;
+        }
+
+        .poster {
+            width: 100%;
+            height: 260px;
+            border-radius: 14px;
+            object-fit: cover;
+        }
+
+        .name {
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* ============================
+           DARK MODE FIX — SAME AS HOME
+        ============================ */
+        body.dark-mode {
+            background: #ffffff;
+            color: #1e293b;
+        }
+
+        body.dark-mode .header {
+            background: rgba(255,255,255,0.7);
+            border-bottom-color: rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode .card {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        body.dark-mode .card:hover {
+            background: #e5e7eb;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="logo" onclick="window.location.href='/'">CineMatch</div>
+
+    <div class="nav-btns">
+
+        <button class="nav-btn" onclick="window.location.href='/trending'">Trending</button>
+        <button class="nav-btn" onclick="window.location.href='/trending-celebrities'">Trending Actors</button>
+        <button class="nav-btn" onclick="window.location.href='/upload'">Upload</button>
+        <button class="nav-btn" onclick="window.location.href='/actor-match'">Actor Match</button>
+        <button class="nav-btn" onclick="window.location.href='/sentiment'">Sentiment Search</button>
+        <button class="nav-btn" onclick="window.location.href='/quiz-selection'">Quiz 🎭</button>
+        <button class="nav-btn" onclick="toggleDarkMode()">𖤓</button>
+        <button class="nav-btn" onclick="location.href='/history'">History</button>
+
+        <!-- 🔥 NOT LOGGED IN -->
+        <th:block th:if="${loggedUser == null}">
+            <button class="nav-btn" onclick="window.location.href='/login'">
+                LogIn / SignUp
+            </button>
+        </th:block>
+
+        <!-- ✅ LOGGED IN -->
+        <th:block th:if="${loggedUser != null}">
+            <div class="user-combo">
+
+                <button class="user-left"
+                        onclick="window.location.href='/profile'">
+                    <span th:text="${loggedUser.fullName}">User</span>
+                </button>
+
+                <button class="user-right"
+                        onclick="window.location.href='/logout'">
+                    Logout
+                </button>
+
+            </div>
+        </th:block>
+
+    </div>
+</div>
+
+
+<!-- MOVIES -->
+<h2 class="section-title">Top 10 Movies</h2>
+<div class="grid">
+    <div class="card" th:each="m : ${movies}" th:onclick="'window.location.href=\'/movie/' + ${m['id']} + '\''">
+        <img class="poster"
+             th:src="${m['poster_path']} != null ?
+                |https://image.tmdb.org/t/p/w500${m['poster_path']}| :
+                '/images/no-image.png'">
+        <div class="name" th:text="${m['title']}"></div>
+    </div>
+</div>
+
+
+<!-- TV SERIES -->
+<h2 class="section-title">Top 10 TV Series</h2>
+<div class="grid">
+    <div class="card" th:each="s : ${series}" th:onclick="'window.location.href=\'/tv/' + ${s['id']} + '\''">
+        <img class="poster"
+             th:src="${s['poster_path']} != null ?
+                |https://image.tmdb.org/t/p/w500${s['poster_path']}| :
+                '/images/no-image.png'">
+        <div class="name" th:text="${s['name']}"></div>
+    </div>
+</div>
+
+
+<!-- JAVASCRIPT FOR DARK MODE -->
+<script>
+    function toggleDarkMode() {
+        const isDark = document.body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    });
+</script>
+
+</body>
+</html>
