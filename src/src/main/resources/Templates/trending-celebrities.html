@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trending Celebrities</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0f172a;
+            font-family: system-ui, sans-serif;
+            color: #e5e7eb;
+        }
+
+        .header {
+            backdrop-filter: blur(14px);
+            background: rgba(15, 23, 42, 0.75);
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            -webkit-background-clip: text;
+            color: transparent;
+            cursor: pointer;
+        }
+
+        body.dark-mode {
+            background: #ffffff;
+            color: #111827;
+        }
+
+        body.dark-mode .header {
+            background: rgba(255,255,255,0.7);
+            border-bottom-color: rgba(0,0,0,0.25);
+        }
+
+        /* β… DARK MODE FOR CELEBRITY CARDS */
+        body.dark-mode .card {
+            background: #f1f5f9;
+            color: #111827;
+        }
+
+        body.dark-mode .card:hover {
+            background: #e5e7eb;
+        }
+
+        body.dark-mode .name {
+            color: #111827;
+        }
+
+        /* β… COMBINED USER BUTTON (PROFILE + LOGOUT) */
+        .user-combo {
+            display: flex;
+            border-radius: 999px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        /* ΞΞΏΞΉΞ½Ο styling ΞΊΞ±ΞΉ Ξ³ΞΉΞ± Ο„Ξ± 2 */
+        .user-combo button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            color: white;
+            background: transparent;
+            font-weight: 600;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        /* β… Ξ“Ξ΅Ξ‘ΞΞΞΞ¥Ξ›Ξ‘ Ξ‘ΞΞ‘ΞΞ•Ξ£Ξ‘ */
+        .user-left {
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* β… ΞΞ‘Ξ›Ξ¥Ξ¤Ξ•Ξ΅Ξ HOVER */
+        .user-combo button:hover {
+            background: rgba(0,0,0,0.25);
+            transform: translateY(-1px);
+        }
+
+        /* β… Ξ Ξ™Ξ β€ΞΞ›Ξ™Ξ-FEELβ€ Ξ£Ξ¤Ξ LOGOUT */
+        .user-right:hover {
+            background: rgba(0,0,0,0.35);
+        }
+
+        .nav-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 15px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            transition: transform 0.2s linear, opacity 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 25px 40px 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 0 40px 40px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            background: #334155;
+        }
+
+        .poster {
+            width: 100%;
+            height: 260px;
+            border-radius: 14px;
+            object-fit: cover;
+        }
+
+        .name {
+            margin-top: 10px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo" onclick="window.location.href='/'">CineMatch</div>
+
+    <div class="nav-btns">
+        <button class="nav-btn" onclick="window.location.href='/trending'">Trending</button>
+        <button class="nav-btn" onclick="window.location.href='/trending-celebrities'">Trending Actors</button>
+        <button class="nav-btn" onclick="window.location.href='/upload'">Upload</button>
+        <button class="nav-btn" onclick="window.location.href='/actor-match'">Actor Match</button>
+        <button class="nav-btn" onclick="window.location.href='/sentiment'">Sentiment Search</button>
+        <button class="nav-btn" onclick="window.location.href='/quiz-selection'">Quiz π­</button>
+        <button class="nav-btn" onclick="toggleDarkMode()">π–¤“</button>
+        <button class="nav-btn" onclick="location.href='/history'">History</button>
+
+        <!-- π”¥ NOT LOGGED IN -->
+        <th:block th:if="${loggedUser == null}">
+            <button class="nav-btn" onclick="window.location.href='/login'">
+                LogIn / SignUp
+            </button>
+        </th:block>
+
+        <!-- β… LOGGED IN -->
+        <th:block th:if="${loggedUser != null}">
+            <div class="user-combo">
+
+                <button class="user-left"
+                        onclick="window.location.href='/profile'">
+                    <span th:text="${loggedUser.fullName}">User</span>
+                </button>
+
+                <button class="user-right"
+                        onclick="window.location.href='/logout'">
+                    Logout
+                </button>
+
+            </div>
+        </th:block>
+    </div>
+</div>
+
+<h2 class="section-title">π”¥ Trending Celebrities</h2>
+
+<div class="grid">
+    <div class="card"
+         th:each="p : ${celebrities}"
+         th:onclick="'window.location.href=\'/person/' + ${p['id']} + '\''">
+
+        <img class="poster"
+             th:src="${p['profile_path']} != null ?
+                |https://image.tmdb.org/t/p/w500${p['profile_path']}| :
+                '/images/no-image.png'">
+
+        <div class="name" th:text="${p['name']}"></div>
+    </div>
+</div>
+
+<script>
+    function toggleDarkMode() {
+        const body = document.body;
+        const isDark = body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", isDark);
+    }
+
+    window.onload = () => {
+        if (localStorage.getItem("darkMode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    };
+</script>
+
+
+</body>
+</html>
