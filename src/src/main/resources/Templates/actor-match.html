@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Actor Match • CineMatch</title>
+    <style>
+        body { margin: 0; background: #0f172a; font-family: system-ui; color: #e5e7eb; }
+        .header { backdrop-filter: blur(14px); background: rgba(15, 23, 42, 0.75); padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(148,163,184,0.2); }
+        .logo { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #f97316, #ec4899); -webkit-background-clip: text; color: transparent; text-decoration: none; }
+        .nav-btns { display: flex; gap: 14px; }
+        .nav-btn { padding: 10px 20px; border-radius: 999px; background: linear-gradient(135deg,#f97316,#ec4899); color: white; font-weight: 600; text-decoration: none; font-size: 14px; }
+        .actor-panel { max-width: 500px; margin: 50px auto; background: #1e293b; padding: 40px; border-radius: 24px; text-align: center; }
+        .preview-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 15px; margin-top: 20px; display: none; border: 3px solid #f97316; }
+        .upload-label { display: inline-block; padding: 12px 25px; background: #475569; border-radius: 10px; cursor: pointer; margin-bottom: 10px; }
+        input[type="file"] { display: none; }
+        .btn-submit { width: 100%; padding: 15px; border-radius: 10px; border: none; background: linear-gradient(135deg,#f97316,#ec4899); color: white; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="/" class="logo">CineMatch</a>
+    <div class="nav-btns">
+        <a href="/trending" class="nav-btn">Trending</a>
+        <a href="/actor-match" class="nav-btn">Actor Match</a>
+        <a href="/quiz-selection" class="nav-btn">Quiz 🎭</a>
+    </div>
+</div>
+
+<div class="actor-panel">
+    <h1>🎭 Who do you look like?</h1>
+    <form th:action="@{/actor-match}" method="POST" enctype="multipart/form-data">
+        <label class="upload-label" for="photo">📸 Choose a Selfie</label>
+        <input type="file" id="photo" name="photo" accept="image/*" required onchange="previewImage(event)">
+
+        <img id="imagePreview" class="preview-img" src="#" alt="Preview">
+
+        <button type="submit" class="btn-submit">🔍 Find My Actor Match</button>
+    </form>
+</div>
+
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+</body>
+</html>
