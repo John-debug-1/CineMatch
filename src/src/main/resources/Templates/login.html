@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>CineMatch - Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #0f172a;
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 18px;
+            padding: 32px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            text-align: center;
+        }
+
+        .card form {
+            text-align: left;
+            width: 100%;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 24px;
+        }
+        .field {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: #9ca3af;
+        }
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid #475569;
+            background: rgba(15,23,42,0.8);
+            color: #e5e7eb;
+            outline: none;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #f97316;
+        }
+        button {
+            width: 100%;
+            padding: 11px 16px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* toggle switch button */
+        .switch-btn {
+            margin-top: 18px;
+            background: none;
+            color: #f97316;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* extra sign-up fields hidden initially */
+        #signup-fields {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="title" id="form-title">CineMatch – Sign In</div>
+    <div class="subtitle" id="form-subtitle">Sign in to explore movies & people</div>
+
+    <form id="auth-form" action="/login" method="POST">
+
+        <div th:if="${param.error}"
+             style="color:#f87171; margin-top:10px; font-size:14px; text-align:center;">
+            Incorrect email or password.
+        </div>
+
+        <div id="signup-fields">
+            <div class="field">
+                <label>Full Name</label>
+                <input name="fullName" type="text" placeholder="Your name">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Email/UserName</label>
+            <input name="email" type="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input name="password" type="password" placeholder="••••••••" required>
+        </div>
+
+        <button id="submit-btn" type="submit">Sign In</button>
+    </form>
+
+    <button class="switch-btn" onclick="toggleMode()" id="switch-btn">
+        Don't have an account? Sign Up
+    </button>
+</div>
+
+<div id="agreement-modal" style="display:none;
+     position:fixed; inset:0; background:rgba(0,0,0,0.7);
+     z-index:9999; align-items:center; justify-content:center;">
+
+    <div style="
+      background:#0f172a; color:#e5e7eb;
+      max-width:720px; width:92%;
+      padding:28px;
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,0.25);
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+  ">
+        <h2 style="color:#f97316; margin-top:0;">CineMatch – User Agreement</h2>
+
+        <div style="max-height:300px; overflow:auto; font-size:14px; line-height:1.6;">
+            <p>By using CineMatch you agree that:</p>
+            <ul>
+                <li>This is an educational/portfolio project.</li>
+                <li>You are responsible for your content (reviews/uploads).</li>
+                <li>No illegal/abusive/copyrighted uploads.</li>
+                <li>The app is provided “as is”.</li>
+            </ul>
+        </div>
+
+        <div style="margin-top:18px; display:flex; justify-content:flex-end; gap:12px;">
+            <button onclick="location.href='/logout'"
+                    style="padding:10px 18px; border-radius:999px;
+                     background:transparent; color:#f97316; border:2px solid #f97316;
+                     font-weight:800; cursor:pointer;">
+                Logout
+            </button>
+
+            <button onclick="acceptAgreement()"
+                    style="padding:10px 18px; border-radius:999px;
+                     background:linear-gradient(135deg,#f97316,#ec4899);
+                     color:white; border:none; font-weight:800; cursor:pointer;">
+                I Agree
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    let isSignUp = false;
+
+    function toggleMode() {
+        isSignUp = !isSignUp;
+
+        const title = document.getElementById("form-title");
+        const subtitle = document.getElementById("form-subtitle");
+        const signupFields = document.getElementById("signup-fields");
+        const switchBtn = document.getElementById("switch-btn");
+        const submitBtn = document.getElementById("submit-btn");
+        const form = document.getElementById("auth-form");
+
+        if (isSignUp) {
+            title.textContent = "CineMatch – Sign Up";
+            subtitle.textContent = "Create your account to get started";
+            signupFields.style.display = "block";
+            submitBtn.textContent = "Sign Up";
+            switchBtn.textContent = "Already have an account? Sign In";
+            form.action = "/signup";
+        } else {
+            title.textContent = "CineMatch – Sign In";
+            subtitle.textContent = "Sign in to explore movies & people";
+            signupFields.style.display = "none";
+            submitBtn.textContent = "Sign In";
+            switchBtn.textContent = "Don't have an account? Sign Up";
+            form.action = "/login";
+        }
+    }
+
+
+    function acceptAgreement() {
+    fetch("/agreement/accept", { method: "POST" })
+      .then(() => {
+        document.getElementById("agreement-modal").style.display = "none";
+        document.body.style.overflow = "auto";
+      });
+  }
+
+  window.addEventListener("load", () => {
+    const needsAgreement = [[${session.needsAgreement != null}]];
+    if (needsAgreement) {
+      document.getElementById("agreement-modal").style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+  });
+</script>
+
+</body>
+</html>
