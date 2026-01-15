@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Match Result • CineMatch</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: system-ui; margin: 0; }
+        .header { backdrop-filter: blur(14px); background: rgba(15, 23, 42, 0.75); padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(148,163,184,0.2); }
+        .logo { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #f97316, #ec4899); -webkit-background-clip: text; color: transparent; text-decoration: none; cursor: pointer; }
+        .nav-btns { display: flex; gap: 14px; }
+        .nav-btn { padding: 10px 20px; border-radius: 999px; border: none; cursor: pointer; background: linear-gradient(135deg,#f97316,#ec4899); color: white; font-weight: 600; text-decoration: none; font-size: 14px; }
+        .result-container { margin-top: 50px; text-align: center; }
+        .photo-card { background: #1e293b; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .photo-card img { width: 100%; height: 400px; object-fit: cover; border-radius: 10px; border: 3px solid #f97316; }
+        .match-title { font-size: 2.5rem; font-weight: bold; background: linear-gradient(to right, #f97316, #ec4899); -webkit-background-clip: text; color: transparent; margin-bottom: 30px; }
+        .btn-custom { background: linear-gradient(to right, #f97316, #ec4899); border: none; color: white; padding: 10px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="/" class="logo">CineMatch</a>
+    <div class="nav-btns">
+        <a href="/trending" class="nav-btn">Trending</a>
+        <a href="/actor-match" class="nav-btn">Match</a>
+        <a href="/quiz-selection" class="nav-btn">Quiz</a>
+        <a href="/" class="nav-btn" style="background: #475569;">Home</a>
+    </div>
+</div>
+
+<div class="container result-container">
+    <h1 class="match-title">It's a Match!</h1>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-4">
+            <div class="photo-card">
+                <img th:src="${userPhoto}" alt="You">
+                <h4 class="mt-3">You</h4>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <h2 class="text-warning" style="font-size: 3rem; font-weight: 900;">VS</h2>
+        </div>
+        <div class="col-md-4">
+            <div class="photo-card">
+                <img th:src="${actorImage}" alt="Match">
+                <h4 class="mt-3" th:text="${matchedActorName}">Actor Name</h4>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <a href="/actor-match" class="btn btn-custom">Try Again</a>
+    </div>
+</div>
+
+</body>
+</html>
