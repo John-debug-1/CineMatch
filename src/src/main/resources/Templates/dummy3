@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Αναζήτηση Ταινιών</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f8f9fa; }
+        .search-container { max-width: 600px; margin: 0 auto; text-align: center; }
+        input[type="text"] { padding: 12px; width: 70%; border-radius: 20px; border: 1px solid #ccc; outline: none; }
+        button { padding: 12px 20px; border-radius: 20px; border: none; background: #28a745; color: white; cursor: pointer; }
+        
+        .results { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .movie-card { background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .movie-placeholder { height: 150px; background: #ddd; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="search-container">
+    <h1>🔍 Βρες την ταινία σου</h1>
+    <form action="/search" method="POST">
+        <input type="text" name="query" placeholder="Πληκτρολόγησε τίτλο ταινίας..." required>
+        <button type="submit">Αναζήτηση</button>
+    </form>
+</div>
+
+<div class="results">
+    <div class="movie-card">
+        <div class="movie-placeholder">Poster</div>
+        <h3>Inception</h3>
+        <p>2010</p>
+    </div>
+    <div class="movie-card">
+        <div class="movie-placeholder">Poster</div>
+        <h3>Interstellar</h3>
+        <p>2014</p>
+    </div>
+</div>
+
+</body>
+</html>
